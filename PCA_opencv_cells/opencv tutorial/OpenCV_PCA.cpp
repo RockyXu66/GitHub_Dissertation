@@ -63,7 +63,7 @@ void savePCA(const string &file_name,vector<PCA> pcas, int cell_num){
     fs.release();
 }
 
-PCA loadPCA(const string &file_name, int num_components)
+PCA loadPCA(const string &file_name)
 {
     PCA pca_;
     FileStorage fs(file_name,FileStorage::READ);
@@ -75,7 +75,9 @@ PCA loadPCA(const string &file_name, int num_components)
     cout<<"e_values"<<endl;
 //    pca_.eigenvectors = pca_.eigenvectors(Rect(0,0,960*960,num_components));
 //    pca_.eigenvalues = pca_.eigenvalues(Rect(0,0,1,num_components));
-    
+    if(pca_.mean.empty()){
+        cout<<"Cannot load file "<<file_name<<endl;
+    }
     fs.release();
     return pca_;
 }
@@ -88,11 +90,14 @@ void saveScores(const string &file_name, Mat scores){
     fs.release();
 }
 
-Mat loadScores(const string &file_name, int num_components){
+Mat loadScores(const string &file_name){
     Mat scores;
     FileStorage fs(file_name,FileStorage::READ);
     fs["scores"] >> scores;
-    scores = scores(Rect(0,0,num_components,1));
+    if(scores.empty()){
+        cout<<"Cannot load file "<<file_name<<endl;
+    }
+//    scores = scores(Rect(0,0,num_components,1));
     fs.release();
     return scores;
 }
@@ -119,7 +124,7 @@ Mat mergeChannels(Mat b, Mat g, Mat r, string oneImagePath){
 }
 
 // Number of components to keep for the PCA:
-const int num_components = 90;
+const int num_components = 10;
 const int imageIndex = 10;
 const int image_num = 120;
 const int image_width = 960;
@@ -144,20 +149,6 @@ int main(int argc, const char *argv[]) {
     Mat d = c.t(); // Transpose
     cout<<c.rows<<" "<<c.cols<<endl;
     cout<<d.rows<<" "<<d.cols<<endl;
-//    for(int i=0; i<c.rows; i++){
-//        cout<<double(c.at<uchar>(i, 0))<<endl;
-//    }
-
-//    cout<<"Start loading images:"<<endl;
-//    for(int i=0; i<image_num; i++){
-//        Mat src = imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/artifix_120/artifix" + to_string(i+1)+".png");
-//        Mat bgr[3];   //destination array
-//        split(src,bgr);//split source
-//        db_b.push_back(bgr[0]);
-//        db_g.push_back(bgr[1]);
-//        db_r.push_back(bgr[2]);
-//    }
-//    cout<<"Finish loading images."<<endl;
     
     /*
     // Crop to cells
@@ -242,61 +233,78 @@ int main(int argc, const char *argv[]) {
     cout<<"Finish saving scores to files."<<endl;
      */
     
-//    PCA pca_b_new;
-//    FileStorage fs("ResultPCA/PCA_b_Result(chest).txt",FileStorage::READ);
-//    FileNode fn(fs["PCA"]);
-//    pca_b_new.read(fn);
-    
     // Load the PCA result
     cout<<"===Load PCA results==="<<endl;
     auto load1 = chrono::high_resolution_clock::now();
-    PCA pca_b = loadPCA("/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA/PCA_cells_b(chest).txt", num_components);
-    PCA pca_g = loadPCA("/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA/PCA_cells_g(chest).txt", num_components);
-    PCA pca_r = loadPCA("/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA/PCA_cells_r(chest).txt", num_components);
-//    Mat scores_b = loadScores("/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA/Scores_b_Result(chest).txt", num_components);
-//    Mat scores_g = loadScores("/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA/Scores_g_Result(chest).txt", num_components);
-//    Mat scores_r = loadScores("/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA/Scores_r_Result(chest).txt", num_components);
+    PCA pca_b = loadPCA("/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/PCA_cells_b(chest).txt");
+    PCA pca_g = loadPCA("/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/PCA_cells_g(chest).txt");
+    PCA pca_r = loadPCA("/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/PCA_cells_r(chest).txt");
+    Mat scores_b = loadScores("/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/Scores_cells_b(chest).txt");
+    Mat scores_g = loadScores("/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/Scores_cells_g(chest).txt");
+    Mat scores_r = loadScores("/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/Scores_cells_r(chest).txt");
     auto load2 = chrono::high_resolution_clock::now();
     chrono::duration<double> elapsed_load = load2 - load1;
-    cout<<"Finish loading PCA results. Duration time: "<<float(elapsed_load.count()) / 60.0f << " min" <<endl;
-    
-//    // The mean image:
-//    Mat mean = mergeChannels(pca_b.mean.row(0), pca_g.mean.row(0), pca_r.mean.row(0), dimension, oneImagePath);
-//    imshow("mean", mean);
-//
-//    // The first three eigen texture:
-//    Mat pca1 = mergeChannels(pca_b.eigenvectors.row(0), pca_g.eigenvectors.row(0), pca_r.eigenvectors.row(0), dimension, oneImagePath);
-//    imshow("pc1", pca1);
-    
-//    Mat scores_b = pca_b.project(data_b.row(imageIndex));
-//    saveScores("/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA/Scores_b_Result(chest).txt", dst_b);
-//    cout<<dst_b.rows<<" "<<dst_b.cols<<endl;
-//    Mat scores_g = pca_g.project(data_g.row(imageIndex));
-//    saveScores("/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA/Scores_g_Result(chest).txt", dst_g);
-//    Mat scores_r = pca_r.project(data_r.row(imageIndex));
-//    saveScores("/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA/Scores_r_Result(chest).txt", dst_r);
+    cout<<"Finish loading PCA results. (Duration time: "<<float(elapsed_load.count()) / 60.0f << " min)" <<endl;
     
     
-//    Mat reconstruction_b = norm_0_255(pca_b.backProject(scores_b)).reshape(1, dimension);
-//    Mat reconstruction_g = norm_0_255(pca_g.backProject(scores_g)).reshape(1, dimension);
-//    Mat reconstruction_r = norm_0_255(pca_r.backProject(scores_r)).reshape(1, dimension);
-//    
-//    // Put three channel into one bgr image
-//    Mat resultImage = mergeChannels(reconstruction_b, reconstruction_g, reconstruction_r, oneImagePath);
-//    imwrite("ResultImages/artifix"+to_string(imageIndex+1)+"_"+to_string(num_components)+".png", resultImage);
-//    cout<<"Finish reconstruction"<<endl;
-//    
-//    imshow("Reconstruction", resultImage);
-//    
-//    // Crop to cell (Rect(x, y, width, height))
-//    Mat cell = resultImage(Rect(100,0,150,150));
-//    imshow("cell", cell);
+    // Reconstruction
+    cout<<"===Start reconstruction==="<<endl;
+    auto re1 = chrono::high_resolution_clock::now();
+    // Get all pcas
+    vector<PCA> pcas_b, pcas_g, pcas_r;
     
+    Mat mean_bgr[3], bgr[3];
+    split(imread(oneImagePath), mean_bgr);
+    split(imread(oneImagePath), bgr);
+    int x = image_height/cell_dimension;
+    int y = image_width/cell_dimension;
+    for(int i=0; i<x; i++){
+        for(int j=0; j<y; j++){
+            // Get cell image pca and score
+            PCA pcaB, pcaG, pcaR;
+            pcaB.mean = pca_b.mean(Rect(0,j+i*y,cell_dimension*cell_dimension,1));
+            pcaB.eigenvalues = pca_b.eigenvalues(Rect(j+i*y,0,1,num_components));
+            pcaB.eigenvectors = pca_b.eigenvectors(Rect(0,(j+i*y)*image_num,cell_dimension*cell_dimension,num_components));
+            pcaG.mean = pca_g.mean(Rect(0,j+i*y,cell_dimension*cell_dimension,1));
+            pcaG.eigenvalues = pca_g.eigenvalues(Rect(j+i*y,0,1,num_components));
+            pcaG.eigenvectors = pca_g.eigenvectors(Rect(0,(j+i*y)*image_num,cell_dimension*cell_dimension,num_components));
+            pcaR.mean = pca_r.mean(Rect(0,j+i*y,cell_dimension*cell_dimension,1));
+            pcaR.eigenvalues = pca_r.eigenvalues(Rect(j+i*y,0,1,num_components));
+            pcaR.eigenvectors = pca_r.eigenvectors(Rect(0,(j+i*y)*image_num,cell_dimension*cell_dimension,num_components));
+            Mat scoreB = scores_b(Rect(0,imageIndex*cell_num+j+i*y,num_components,1));
+            Mat scoreG = scores_g(Rect(0,imageIndex*cell_num+j+i*y,num_components,1));
+            Mat scoreR = scores_r(Rect(0,imageIndex*cell_num+j+i*y,num_components,1));
+            Mat b = pcaB.backProject(scoreB).reshape(1,cell_dimension);
+            Mat g = pcaG.backProject(scoreG).reshape(1,cell_dimension);
+            Mat r = pcaR.backProject(scoreR).reshape(1,cell_dimension);
+            
+            // Mean image
+            pcaB.mean.reshape(1,cell_dimension).copyTo(mean_bgr[0](Rect(i*cell_dimension,j*cell_dimension,cell_dimension,cell_dimension)));
+            pcaG.mean.reshape(1,cell_dimension).copyTo(mean_bgr[1](Rect(i*cell_dimension,j*cell_dimension,cell_dimension,cell_dimension)));
+            pcaR.mean.reshape(1,cell_dimension).copyTo(mean_bgr[2](Rect(i*cell_dimension,j*cell_dimension,cell_dimension,cell_dimension)));
+            
+            // Reconstruction image
+            b.copyTo(bgr[0](Rect(i*cell_dimension,j*cell_dimension,cell_dimension,cell_dimension)));
+            g.copyTo(bgr[1](Rect(i*cell_dimension,j*cell_dimension,cell_dimension,cell_dimension)));
+            r.copyTo(bgr[2](Rect(i*cell_dimension,j*cell_dimension,cell_dimension,cell_dimension)));
+        }
+    }
+//    Mat reconstruction_b = norm_0_255(mean_bgr[0]);
+//    Mat reconstruction_g = norm_0_255(mean_bgr[1]);
+//    Mat reconstruction_r = norm_0_255(mean_bgr[2]);
+    Mat reconstruction_b = norm_0_255(bgr[0]);
+    Mat reconstruction_g = norm_0_255(bgr[1]);
+    Mat reconstruction_r = norm_0_255(bgr[2]);
+    auto re2 = chrono::high_resolution_clock::now();
+    chrono::duration<double> elapsed_re = re2 - re1;
+    cout<<"Finish reconstruction. (Duration time: "<<float(elapsed_re.count()) / 60.0f << " min)" <<endl;
     
-    // Show the images:
-//    waitKey(0);
+    // Put three channel into one bgr image
+    Mat resultImage = mergeChannels(reconstruction_b, reconstruction_g, reconstruction_r, oneImagePath);
+    imwrite("ResultImages/artifix"+to_string(imageIndex+1)+"_"+to_string(num_components)+".png", resultImage);
+    imshow("Reconstruction", resultImage);
+    waitKey(0);
     
-    // Success!
     return 0;
 }
 

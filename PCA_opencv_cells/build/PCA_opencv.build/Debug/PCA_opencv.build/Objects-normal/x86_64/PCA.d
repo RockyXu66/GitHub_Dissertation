@@ -1,6 +1,6 @@
 dependencies: \
-  /Users/yinghanxu/Study/Github_Dissertation/PCA_opencv_cells/opencv\ tutorial/PCA.cpp \
-  /Users/yinghanxu/Study/Github_Dissertation/PCA_opencv_cells/opencv\ tutorial/PCA.hpp \
+  /Users/yinghanxu/Study/GitHub_Dissertation/PCA_opencv_cells/opencv\ tutorial/PCA.cpp \
+  /Users/yinghanxu/Study/GitHub_Dissertation/PCA_opencv_cells/opencv\ tutorial/PCA.hpp \
   /usr/local/include/Eigen/Eigen /usr/local/include/Eigen/Dense \
   /usr/local/include/Eigen/Core \
   /usr/local/include/Eigen/src/Core/util/DisableStupidWarnings.h \

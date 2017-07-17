@@ -1,5 +1,5 @@
 dependencies: \
-  /Users/yinghanxu/Study/Github_Dissertation/PCA_opencv_cells/opencv\ tutorial/OpenCV_PCA.cpp \
+  /Users/yinghanxu/Study/GitHub_Dissertation/PCA_opencv_cells/opencv\ tutorial/OpenCV_PCA.cpp \
   /usr/local/include/opencv2/core/core.hpp \
   /usr/local/include/opencv2/core.hpp \
   /usr/local/include/opencv2/core/cvdef.h \
