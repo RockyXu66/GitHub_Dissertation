@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Resource Files\textures">
+      <UniqueIdentifier>{d580c210-51ae-4a99-9c48-331a388fdd21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\textures\image_face">
+      <UniqueIdentifier>{bd7ef7de-2520-4918-8cfc-222684a8cf91}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PCA.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="textures\1.jpg">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="textures\container2.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="textures\container2_specular.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="textures\pixels2.jpg">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="textures\testImage.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="textures\wood.png">
+      <Filter>Resource Files\textures</Filter>
+    </Image>
+    <Image Include="textures\image_face\eye_1.png">
+      <Filter>Resource Files\textures\image_face</Filter>
+    </Image>
+    <Image Include="textures\image_face\eye_2.png">
+      <Filter>Resource Files\textures\image_face</Filter>
+    </Image>
+    <Image Include="textures\image_face\eye_3.png">
+      <Filter>Resource Files\textures\image_face</Filter>
+    </Image>
+    <Image Include="textures\image_face\face_1.png">
+      <Filter>Resource Files\textures\image_face</Filter>
+    </Image>
+    <Image Include="textures\image_face\face_2.png">
+      <Filter>Resource Files\textures\image_face</Filter>
+    </Image>
+    <Image Include="textures\image_face\face_3.png">
+      <Filter>Resource Files\textures\image_face</Filter>
+    </Image>
+    <Image Include="textures\image_face\face1.png">
+      <Filter>Resource Files\textures\image_face</Filter>
+    </Image>
+    <Image Include="textures\image_face\face2.png">
+      <Filter>Resource Files\textures\image_face</Filter>
+    </Image>
+    <Image Include="textures\image_face\face3.png">
+      <Filter>Resource Files\textures\image_face</Filter>
+    </Image>
+    <Image Include="textures\image_face\img_IBRFace2.jpg">
+      <Filter>Resource Files\textures\image_face</Filter>
+    </Image>
+    <Image Include="textures\image_face\left_1.png">
+      <Filter>Resource Files\textures\image_face</Filter>
+    </Image>
+    <Image Include="textures\image_face\left_2.png">
+      <Filter>Resource Files\textures\image_face</Filter>
+    </Image>
+    <Image Include="textures\image_face\left_3.png">
+      <Filter>Resource Files\textures\image_face</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="PCA.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,37 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "C268F5BD1724BC4F10BC49467B0CF6D53E36B566",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "DE04DE2F7DEBE78586ED25CC854B6B7553F76B75" : 9223372036854775807,
+    "C268F5BD1724BC4F10BC49467B0CF6D53E36B566" : 9223372036854775807,
+    "B0836E5A29C8DD398A3A24847E51A576DE05495A" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "199845F4-013D-424F-8176-37B86CB157D0",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "DE04DE2F7DEBE78586ED25CC854B6B7553F76B75" : "..\/opencv",
+    "C268F5BD1724BC4F10BC49467B0CF6D53E36B566" : "Github_Dissertation\/",
+    "B0836E5A29C8DD398A3A24847E51A576DE05495A" : "Gitlab_Dissertation\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "opencv tutorial",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "SSIM_opencv\/opencv tutorial.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/gitlab.com\/RockyXu66\/Gitlab_Dissertation.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "B0836E5A29C8DD398A3A24847E51A576DE05495A"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/RockyXu66\/Github_Dissertation.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "C268F5BD1724BC4F10BC49467B0CF6D53E36B566"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/opencv\/opencv",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "DE04DE2F7DEBE78586ED25CC854B6B7553F76B75"
+    }
+  ]
+}
