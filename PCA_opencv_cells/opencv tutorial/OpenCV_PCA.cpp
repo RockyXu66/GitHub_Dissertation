@@ -124,25 +124,19 @@ Mat mergeChannels(Mat b, Mat g, Mat r, string oneImagePath){
 }
 
 // Number of components to keep for the PCA:
-const int num_components = 10;
+const int num_components = 400;
 const int imageIndex = 10;
-const int image_num = 120;
-const int image_width = 960;
-const int image_height = 960;
+const int image_num = 900;      //120
+const int image_width = 1080;   //960
+const int image_height = 1080;  //960
 const int cell_dimension = 20;
 
-String oneImagePath = "/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/artifix_120/artifix1.png";
+//String oneImagePath = "/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/artifix_120/artifix1.png";
+String oneImagePath = "/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/head_900/head2.png";
 
 int main(int argc, const char *argv[]) {
     
-    // Holds some images:
-    vector<Mat> db_b;
-    vector<Mat> db_g;
-    vector<Mat> db_r;
-    
     int cell_num = (image_width*image_height)/(cell_dimension*cell_dimension);
-    
-    Mat grayImg_b = imread(oneImagePath, IMREAD_GRAYSCALE);
     
     Mat c = imread(oneImagePath, IMREAD_GRAYSCALE);
     c = c.reshape(1, 10);
@@ -150,7 +144,6 @@ int main(int argc, const char *argv[]) {
     cout<<c.rows<<" "<<c.cols<<endl;
     cout<<d.rows<<" "<<d.cols<<endl;
     
-    /*
     // Crop to cells
     cout<<"Start loading images:"<<endl;
     auto t_load1 = chrono::high_resolution_clock::now();
@@ -159,7 +152,7 @@ int main(int argc, const char *argv[]) {
         for(int j=0; j<image_width/cell_dimension; j++){
             vector<Mat> cell_b, cell_g, cell_r;
             for(int n=0; n<image_num; n++){
-                Mat img = imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/artifix_120/artifix" + to_string(n+1)+".png");
+                Mat img = imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/head_900/head" + to_string(n+1)+".png");
                 img = img(Rect(i*cell_dimension,j*cell_dimension,cell_dimension,cell_dimension));
                 Mat bgr[3];   //destination array
                 split(img,bgr);//split source
@@ -205,12 +198,12 @@ int main(int argc, const char *argv[]) {
     chrono::duration<double> t_pca_elapsed = t_pca2 - t_pca1;
     cout << "Finish calculating PCA. Duration time: "<<float(t_pca_elapsed.count()) / 60.0f << " min"<< endl;
 
-    // Save the PCA result
-    cout<<"===Save to files==="<<endl;
-    savePCA("/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA/PCA_cells_b(chest).txt", pcas_b, cell_num);
-    savePCA("/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA/PCA_cells_g(chest).txt", pcas_g, cell_num);
-    savePCA("/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA/PCA_cells_r(chest).txt", pcas_r, cell_num);
-    cout<<"Finish saving to files."<<endl;
+//    // Save the PCA result
+//    cout<<"===Save to files==="<<endl;
+//    savePCA("/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/PCA_cells_b(head30).txt", pcas_b, cell_num);
+//    savePCA("/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/PCA_cells_g(head30).txt", pcas_g, cell_num);
+//    savePCA("/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/PCA_cells_r(head30).txt", pcas_r, cell_num);
+//    cout<<"Finish saving to files."<<endl;
     
     cout<<"===Save scores to files==="<<endl;
     int pca_dim = pcas_b[0].eigenvectors.rows;
@@ -226,13 +219,14 @@ int main(int argc, const char *argv[]) {
             score_g.copyTo(scores_cells_g(Rect(0,j+i*cell_num,pca_dim,1)));
             score_r.copyTo(scores_cells_r(Rect(0,j+i*cell_num,pca_dim,1)));
         }
+        cout<<i+1<<" ";
     }
-    saveScores("/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA/Scores_cells_b(chest).txt", scores_cells_b);
-    saveScores("/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA/Scores_cells_g(chest).txt", scores_cells_g);
-    saveScores("/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA/Scores_cells_r(chest).txt", scores_cells_r);
+    saveScores("/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/Scores_cells_b(head).txt", scores_cells_b);
+    saveScores("/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/Scores_cells_g(head).txt", scores_cells_g);
+    saveScores("/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/Scores_cells_r(head).txt", scores_cells_r);
     cout<<"Finish saving scores to files."<<endl;
-     */
     
+    /*
     // Load the PCA result
     cout<<"===Load PCA results==="<<endl;
     auto load1 = chrono::high_resolution_clock::now();
@@ -301,9 +295,10 @@ int main(int argc, const char *argv[]) {
     
     // Put three channel into one bgr image
     Mat resultImage = mergeChannels(reconstruction_b, reconstruction_g, reconstruction_r, oneImagePath);
-    imwrite("ResultImages/artifix"+to_string(imageIndex+1)+"_"+to_string(num_components)+".png", resultImage);
+    imwrite("ResultImages/head"+to_string(imageIndex+1)+"_"+to_string(num_components)+".png", resultImage);
     imshow("Reconstruction", resultImage);
     waitKey(0);
+     */
     
     return 0;
 }

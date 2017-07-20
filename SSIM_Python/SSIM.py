@@ -39,18 +39,16 @@ def compare_images(imageA, imageB, title):
 
 # load the images -- the original, the original + contrast,
 # and the original + photoshop
-original = cv2.imread("PCAImages/fig_11.bmp")
-contrast = cv2.imread("PCAImages/fig_11_500.png")
-shopped = cv2.imread("PCAImages/fig_11_500.png")
+original = cv2.imread("PCAImages/artifix11_original.png")
+contrast = cv2.imread("PCAImages/artifix11_30_cells.png")
 
 # convert the images to grayscale
 original = cv2.cvtColor(original, cv2.COLOR_BGR2GRAY)
 contrast = cv2.cvtColor(contrast, cv2.COLOR_BGR2GRAY)
-shopped = cv2.cvtColor(shopped, cv2.COLOR_BGR2GRAY)
 
 # initialize the figure
 fig = plt.figure("Images")
-images = ("Original", original), ("Contrast", contrast), ("Photoshopped", shopped)
+images = ("Original", original), ("Contrast", contrast)
 
 # loop over the images
 for (i, (name, image)) in enumerate(images):
@@ -66,7 +64,6 @@ plt.show()
 # compare the images
 compare_images(original, original, "Original vs. Original")
 compare_images(original, contrast, "Original vs. Contrast")
-compare_images(original, shopped, "Original vs. Photoshopped")
 
 
 

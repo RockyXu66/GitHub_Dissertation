@@ -1,6 +1,6 @@
 dependencies: \
-  /Users/yinghanxu/Study/Gitlab_Dissertation/SSIM_opencv/opencv\ tutorial/SSIM&PSNR.cpp \
-  /Users/yinghanxu/Study/Gitlab_Dissertation/SSIM_opencv/opencv\ tutorial/SSIM&PSNR.hpp \
+  /Users/yinghanxu/Study/GitHub_Dissertation/SSIM_opencv/opencv\ tutorial/SSIM&PSNR.cpp \
+  /Users/yinghanxu/Study/GitHub_Dissertation/SSIM_opencv/opencv\ tutorial/SSIM&PSNR.hpp \
   /usr/local/include/opencv2/opencv.hpp \
   /usr/local/include/opencv2/opencv_modules.hpp \
   /usr/local/include/opencv2/core.hpp \
