@@ -126,27 +126,27 @@ int main()
     int image_width, image_height;
     int image_num = 36;
     
-    // Load images
-    vector<unsigned char*> images;
-    for(int i=0; i<image_num; i++){
-        string filename = "textures/new_Model_screenShot/"+to_string(i+1)+".png";
-        unsigned char* image = SOIL_load_image(filename.c_str(), &image_width, &image_height, 0, SOIL_LOAD_RGB);
-        images.push_back(image);
-    }
-
-    int testTime1 = glfwGetTime();
-    
-    // PCA
-    PCA pca;
-    unsigned char* newImage = pca.CalculateEigen(images, image_width, image_height);
-
-    testTexture = loadNewTexture(newImage, image_width, image_height);
-    
-    int testTime2 = glfwGetTime();
-    int duration = testTime2 - testTime1;
-    cout<<"PCA duration time: "<<endl;
-    cout<<duration<<" s"<<endl;
-    cout<<float(duration)/60.0f<<" min"<<endl;
+//    // Load images
+//    vector<unsigned char*> images;
+//    for(int i=0; i<image_num; i++){
+//        string filename = "textures/new_Model_screenShot/"+to_string(i+1)+".png";
+//        unsigned char* image = SOIL_load_image(filename.c_str(), &image_width, &image_height, 0, SOIL_LOAD_RGB);
+//        images.push_back(image);
+//    }
+//
+//    int testTime1 = glfwGetTime();
+//    
+//    // PCA
+//    PCA pca;
+//    unsigned char* newImage = pca.CalculateEigen(images, image_width, image_height);
+//
+//    testTexture = loadNewTexture(newImage, image_width, image_height);
+//    
+//    int testTime2 = glfwGetTime();
+//    int duration = testTime2 - testTime1;
+//    cout<<"PCA duration time: "<<endl;
+//    cout<<duration<<" s"<<endl;
+//    cout<<float(duration)/60.0f<<" min"<<endl;
     
 /*
 //    unsigned char* pixels = SOIL_load_image("textures/image_face/eye_1.png", &image_width, &image_height, 0, SOIL_LOAD_RGBA);

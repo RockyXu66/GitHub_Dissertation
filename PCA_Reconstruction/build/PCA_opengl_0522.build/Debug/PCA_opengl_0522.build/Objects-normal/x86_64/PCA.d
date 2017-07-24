@@ -1,6 +1,6 @@
 dependencies: \
-  /Users/yinghanxu/Study/Gitlab_Dissertation/PCA_Reconstruction/xcode_test_0117_lightingMaps/PCA.cpp \
-  /Users/yinghanxu/Study/Gitlab_Dissertation/PCA_Reconstruction/xcode_test_0117_lightingMaps/PCA.hpp \
+  /Users/yinghanxu/Study/GitHub_Dissertation/PCA_Reconstruction/xcode_test_0117_lightingMaps/PCA.cpp \
+  /Users/yinghanxu/Study/GitHub_Dissertation/PCA_Reconstruction/xcode_test_0117_lightingMaps/PCA.hpp \
   /usr/local/include/Eigen/Eigen /usr/local/include/Eigen/Dense \
   /usr/local/include/Eigen/Core \
   /usr/local/include/Eigen/src/Core/util/DisableStupidWarnings.h \

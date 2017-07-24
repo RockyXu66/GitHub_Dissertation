@@ -175,7 +175,7 @@ namespace qm
 using namespace qm;
 
 int main(){
-    compute_quality_metrics("PCAImages/artifix11_original.png", "PCAImages/artifix11_30_cells.png", 20);
+    compute_quality_metrics("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/artifix_120/artifix11.png", "/Users/yinghanxu/Study/GitHub_Dissertation/PCA_opencv_cells/opencv tutorial/ResultImages/artifix11_cell15_20.png", 20);
     return 0;
 }
 

@@ -47,7 +47,7 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "YES"
-      customWorkingDirectory = "/Users/yinghanxu/Study/Gitlab_Dissertation/PCA_Reconstruction/xcode_test_0117_lightingMaps"
+      customWorkingDirectory = "/Users/yinghanxu/Study/GitHub_Dissertation/PCA_Reconstruction/xcode_test_0117_lightingMaps"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"

@@ -1,8 +1,8 @@
 dependencies: \
-  /Users/yinghanxu/Study/Gitlab_Dissertation/PCA_Reconstruction/xcode_test_0117_lightingMaps/PCA_opengl.cpp \
+  /Users/yinghanxu/Study/GitHub_Dissertation/PCA_Reconstruction/xcode_test_0117_lightingMaps/PCA_opengl.cpp \
   /usr/local/include/GL/glew.h /usr/local/include/GLFW/glfw3.h \
-  /Users/yinghanxu/Study/Gitlab_Dissertation/PCA_Reconstruction/xcode_test_0117_lightingMaps/utils/Shader.h \
-  /Users/yinghanxu/Study/Gitlab_Dissertation/PCA_Reconstruction/xcode_test_0117_lightingMaps/utils/Camera.h \
+  /Users/yinghanxu/Study/GitHub_Dissertation/PCA_Reconstruction/xcode_test_0117_lightingMaps/utils/Shader.h \
+  /Users/yinghanxu/Study/GitHub_Dissertation/PCA_Reconstruction/xcode_test_0117_lightingMaps/utils/Camera.h \
   /usr/local/include/glm/glm.hpp \
   /usr/local/include/glm/detail/_fixes.hpp \
   /usr/local/include/glm/fwd.hpp \
@@ -96,7 +96,7 @@ dependencies: \
   /usr/local/include/glm/gtc/../gtc/constants.hpp \
   /usr/local/include/glm/gtc/constants.inl \
   /usr/local/include/glm/gtc/matrix_transform.inl \
-  /Users/yinghanxu/Study/Gitlab_Dissertation/PCA_Reconstruction/xcode_test_0117_lightingMaps/utils/Model.h \
+  /Users/yinghanxu/Study/GitHub_Dissertation/PCA_Reconstruction/xcode_test_0117_lightingMaps/utils/Model.h \
   /opt/local/include/SOIL/SOIL.h /usr/local/include/assimp/Importer.hpp \
   /usr/local/include/assimp/types.h /usr/local/include/assimp/defs.h \
   /usr/local/include/assimp/vector3.h \
@@ -119,13 +119,13 @@ dependencies: \
   /usr/local/include/assimp/material.inl \
   /usr/local/include/assimp/anim.h /usr/local/include/assimp/metadata.h \
   /usr/local/include/assimp/postprocess.h \
-  /Users/yinghanxu/Study/Gitlab_Dissertation/PCA_Reconstruction/xcode_test_0117_lightingMaps/utils/mesh.h \
+  /Users/yinghanxu/Study/GitHub_Dissertation/PCA_Reconstruction/xcode_test_0117_lightingMaps/utils/mesh.h \
   /usr/local/include/glm/gtc/type_ptr.hpp \
   /usr/local/include/glm/gtc/../gtc/quaternion.hpp \
   /usr/local/include/glm/gtc/quaternion.inl \
   /usr/local/include/glm/gtc/quaternion_simd.inl \
   /usr/local/include/glm/gtc/type_ptr.inl \
-  /Users/yinghanxu/Study/Gitlab_Dissertation/PCA_Reconstruction/xcode_test_0117_lightingMaps/PCA.hpp \
+  /Users/yinghanxu/Study/GitHub_Dissertation/PCA_Reconstruction/xcode_test_0117_lightingMaps/PCA.hpp \
   /usr/local/include/Eigen/Eigen /usr/local/include/Eigen/Dense \
   /usr/local/include/Eigen/Core \
   /usr/local/include/Eigen/src/Core/util/DisableStupidWarnings.h \
