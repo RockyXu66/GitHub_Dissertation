@@ -32,12 +32,13 @@ public:
     vector<MatrixXd> wholeImage_scores_Red, wholeImage_scores_Green, wholeImage_scores_Blue;
     vector<MatrixXd> oneVecs_Red, oneVecs_Green, oneVecs_Blue;
     MatrixXd means_Red, means_Green, means_Blue;
-    PCA pca_b, pca_g, pca_r;
+    
+    vector<PCA> pcas_b, pcas_g, pcas_r;
     Mat scores_b, scores_g, scores_r;
     
-    char* load();
+    void load();
     
-    unsigned char* reconstruction(int imageIndex, unsigned char* image);
+    unsigned char* reconstruct(int imageIndex, unsigned char* image);
     
     unsigned char* CalculateEigen(vector<unsigned char*> images, int width, int height);
     

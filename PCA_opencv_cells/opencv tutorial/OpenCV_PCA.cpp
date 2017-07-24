@@ -11,7 +11,7 @@ using namespace cv;
 using namespace std;
 
 // Number of components to keep for the PCA:
-const int num_components = 80;
+const int num_components = 30;
 const int smallerNum = 80;
 const int cell_dimension = 20;
 const int imageIndex = 10;
@@ -141,8 +141,8 @@ Mat loadScores(const string &file_name){
     if(scores.empty()){
         cout<<"Cannot load file "<<file_name<<endl;
     }
-//    scores = scores(Rect(0,0,num_components,1));
     fs.release();
+    cout<<"Finish load one scores file"<<endl;
     return scores;
 }
 
@@ -301,7 +301,6 @@ void calculatePCA(int cell_num){
     cout<<"Finish saving scores to files."<<endl;
 }
 
-/*
 void reconstruction(int cell_num){
     // Load the PCA result
     cout<<"===Load PCA results==="<<endl;
@@ -310,9 +309,21 @@ void reconstruction(int cell_num){
     PCA pca_g = loadPCA(file_PCA_g);
     PCA pca_r = loadPCA(file_PCA_r);
     cout<<"===Load scores==="<<endl;
-    Mat scores_b = loadScores(file_Scores_b);
-    Mat scores_g = loadScores(file_Scores_g);
-    Mat scores_r = loadScores(file_Scores_r);
+    Mat scores_b1 = loadScores(file_Scores_b1);
+    Mat scores_b2 = loadScores(file_Scores_b2);
+    Mat scores_g1 = loadScores(file_Scores_g1);
+    Mat scores_g2 = loadScores(file_Scores_g2);
+    Mat scores_r1 = loadScores(file_Scores_r1);
+    Mat scores_r2 = loadScores(file_Scores_r2);
+    Mat scores_b(cell_num*image_num, smallerNum, CV_32F);
+    Mat scores_g(cell_num*image_num, smallerNum, CV_32F);
+    Mat scores_r(cell_num*image_num, smallerNum, CV_32F);
+    scores_b1.copyTo(scores_b(Rect(0,0,smallerNum,(cell_num*image_num)/2)));
+    scores_b2.copyTo(scores_b(Rect(0,(cell_num*image_num)/2,smallerNum,(cell_num*image_num)/2)));
+    scores_g1.copyTo(scores_g(Rect(0,0,smallerNum,(cell_num*image_num)/2)));
+    scores_g2.copyTo(scores_g(Rect(0,(cell_num*image_num)/2,smallerNum,(cell_num*image_num)/2)));
+    scores_r1.copyTo(scores_r(Rect(0,0,smallerNum,(cell_num*image_num)/2)));
+    scores_r2.copyTo(scores_r(Rect(0,(cell_num*image_num)/2,smallerNum,(cell_num*image_num)/2)));
     auto load2 = chrono::high_resolution_clock::now();
     chrono::duration<double> elapsed_load = load2 - load1;
     cout<<"Finish loading PCA results and scores. (Duration time: "<<float(elapsed_load.count()) / 60.0f << " min)" <<endl;
@@ -366,17 +377,18 @@ void reconstruction(int cell_num){
     Mat reconstruction_b = norm_0_255(bgr[0]);
     Mat reconstruction_g = norm_0_255(bgr[1]);
     Mat reconstruction_r = norm_0_255(bgr[2]);
-    auto re2 = chrono::high_resolution_clock::now();
-    chrono::duration<double> elapsed_re = re2 - re1;
-    cout<<"Finish reconstruction. (Duration time: "<<float(elapsed_re.count()) / 60.0f << " min)" <<endl;
     
     // Put three channel into one bgr image
     Mat resultImage = mergeChannels(reconstruction_b, reconstruction_g, reconstruction_r, oneImagePath);
-    imwrite("ResultImages/artifix"+to_string(imageIndex+1)+"_cell"+to_string(cell_dimension)+"_"+to_string(num_components)+".png", resultImage);
+    imwrite("ResultImages/head"+to_string(imageIndex+1)+"_cell"+to_string(cell_dimension)+"_"+to_string(num_components)+".png", resultImage);
     imshow("Reconstruction", resultImage);
+    auto re2 = chrono::high_resolution_clock::now();
+    chrono::duration<double> elapsed_re = re2 - re1;
+    cout<<"Finish reconstruction. (Duration time: "<<float(elapsed_re.count()) / 60.0f << " min)" <<endl;
     waitKey(0);
 }
-*/
+
+
 int main(int argc, const char *argv[]) {
     
     int cell_num = (image_width*image_height)/(cell_dimension*cell_dimension);
@@ -391,7 +403,7 @@ int main(int argc, const char *argv[]) {
     cout<<c.rows<<" "<<c.cols<<endl;
     cout<<d.rows<<" "<<d.cols<<endl;
     
-    calculatePCA(cell_num);
+//    calculatePCA(cell_num);
     /*
     // Crop to cells
     cout<<"Start loading images:"<<endl;
@@ -480,7 +492,7 @@ int main(int argc, const char *argv[]) {
      */
     
     
-//    reconstruction(cell_num);
+    reconstruction(cell_num);
     /*
     // Load the PCA result
     cout<<"===Load PCA results==="<<endl;

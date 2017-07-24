@@ -130,13 +130,10 @@ int main(int argc, const char *argv[])
     
     // PCA
     PCA_ pca;
-    int testTime1 = glfwGetTime();
-    testTexture = loadTexture(pca.load());
-    int testTime2 = glfwGetTime();
-    int duration = testTime2 - testTime1;
-    cout<<"PCA duration time: "<<endl;
-    cout<<duration<<" s"<<endl;
-    cout<<float(duration)/60.0f<<" min"<<endl;
+    GLfloat testTime1 = glfwGetTime();
+    pca.load();
+    GLfloat testTime2 = glfwGetTime();
+    GLfloat duration = testTime2 - testTime1;
     int image_width, image_height;
     string filename = "/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/artifix_120/artifix1.png";
     unsigned char* newImage = SOIL_load_image(filename.c_str(), &image_width, &image_height, 0, SOIL_LOAD_RGB);
@@ -149,7 +146,7 @@ int main(int argc, const char *argv[])
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
         
-        GLfloat time = glfwGetTime();
+        cout<<"DeltaTime: "<<deltaTime<<" FPS: "<<1.0f/deltaTime<<endl;
         
         // Check and call events
         glfwPollEvents();
@@ -159,14 +156,8 @@ int main(int argc, const char *argv[])
         glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
-        testTime1 = glfwGetTime();
-        newImage = pca.reconstruction(imageIndex, newImage);
+        newImage = pca.reconstruct(imageIndex, newImage);
         testTexture = loadNewTexture(newImage, image_width, image_height);
-//        testTexture = loadTexture(pca.reconstruction(imageIndex));
-        testTime2 = glfwGetTime();
-        duration = testTime2 - testTime1;
-        cout<<"RealTime duration time: ";
-        cout<<duration<<" s"<<endl;
         
         // Transformation matrices
         mat4 projection = perspective(camera.Zoom, (float)screenWidth/(float)screenHeight, 0.1f, 100.0f);
@@ -258,6 +249,20 @@ void Do_Movement()
         camera.ProcessKeyboard(LEFT, deltaTime);
     if(keys[GLFW_KEY_D])
         camera.ProcessKeyboard(RIGHT, deltaTime);
+    if(keys[GLFW_KEY_LEFT]){
+        if(imageIndex==0){
+            cout<<"imageIndex: "<<imageIndex;
+            imageIndex = 119;
+        }else{
+            imageIndex--;
+        }
+    }
+    if(keys[GLFW_KEY_RIGHT]){
+        imageIndex ++;
+        if(imageIndex > 119){
+            imageIndex = 0;
+        }
+    }
 }
 
 // Is called whenever a key is pressed/released via GLFW
@@ -267,26 +272,26 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
         glfwSetWindowShouldClose(window, GL_TRUE);
     
     if(action == GLFW_PRESS){
-        switch (key) {
-                
-            case GLFW_KEY_LEFT:
-                if(imageIndex==0){
-                    cout<<"imageIndex: "<<imageIndex;
-                    imageIndex = 119;
-                }else{
-                    imageIndex--;
-                }
-                break;
-            case GLFW_KEY_RIGHT:
-                imageIndex ++;
-                if(imageIndex > 119){
-                    imageIndex = 0;
-                }
-                break;
-                
-            default:
-                break;
-        }
+//        switch (key) {
+//                
+//            case GLFW_KEY_LEFT:
+//                if(imageIndex==0){
+//                    cout<<"imageIndex: "<<imageIndex;
+//                    imageIndex = 119;
+//                }else{
+//                    imageIndex--;
+//                }
+//                break;
+//            case GLFW_KEY_RIGHT:
+//                imageIndex ++;
+//                if(imageIndex > 119){
+//                    imageIndex = 0;
+//                }
+//                break;
+//                
+//            default:
+//                break;
+//        }
         keys[key] = true;
     }
     else if(action == GLFW_RELEASE)

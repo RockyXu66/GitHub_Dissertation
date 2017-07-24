@@ -39,8 +39,12 @@ def compare_images(imageA, imageB, title):
 
 # load the images -- the original, the original + contrast,
 # and the original + photoshop
-original = cv2.imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/artifix_120/artifix11.png")
-contrast = cv2.imread("/Users/yinghanxu/Study/GitHub_Dissertation/PCA_opencv_cells/opencv tutorial/ResultImages/artifix11_cell15_20.png")
+#original = cv2.imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/artifix_120/artifix11.png")
+#contrast = cv2.imread("/Users/yinghanxu/Study/GitHub_Dissertation/PCA_opencv_cells/opencv tutorial/ResultImages/artifix11_cell15_20.png")
+
+original = cv2.imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/head_900/head11.png");
+contrast = cv2.imread("/Users/yinghanxu/Study/GitHub_Dissertation/PCA_opencv_cells/opencv tutorial/ResultImages/head11_cell20_40.png")
+
 
 # convert the images to grayscale
 original = cv2.cvtColor(original, cv2.COLOR_BGR2GRAY)
