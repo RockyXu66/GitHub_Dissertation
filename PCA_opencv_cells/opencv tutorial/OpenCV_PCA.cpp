@@ -16,7 +16,7 @@ using namespace Eigen;
 const int num_components = 25;
 const int smallerNum = 40;
 const int cell_dimension = 20;
-const int imageIndex = 10;
+//const int imageIndex = 10;
 const int image_num = 900;      //120
 const int image_width = 720;   //960
 const int image_height = image_width;  //960
@@ -229,7 +229,7 @@ void calculatePCA(int cell_num){
         for(int j=0; j<image_width/cell_dimension; j++){
             vector<Mat> cell_b, cell_g, cell_r;
             for(int n=0; n<image_num; n++){
-                Mat img = imread("/Users/yinghanxu/Study/Disse rtation_ResultData/Data_Set/head_900(resolution"+to_string(image_width)+")/head" + to_string(n+1)+".png");
+                Mat img = imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/head_900(resolution"+to_string(image_width)+")/head" + to_string(n+1)+".png");
 //                Mat img = imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/artifix_120/artifix" + to_string(n+1)+".png");
                 //                Mat img = imread("/Users/yinghanxu/Study/GitHub_Dissertation/PCA_opencv_0712/opencv tutorial/textures/new_Model_screenShot/"+to_string(n+1)+".png");
                 img = img(Rect(i*cell_dimension,j*cell_dimension,cell_dimension,cell_dimension));
@@ -313,33 +313,12 @@ void calculatePCA(int cell_num){
     cout<<"Finish saving scores to files."<<endl;
 }
 
-void reconstruction(int cell_num, Mat bgr[3]){
-    // Load the PCA result
-    cout<<"===Load PCA results==="<<endl;
-    auto load1 = chrono::high_resolution_clock::now();
-    PCA pca_b = loadPCA(file_PCA_b);
-    PCA pca_g = loadPCA(file_PCA_g);
-    PCA pca_r = loadPCA(file_PCA_r);
-    cout<<"===Load scores==="<<endl;
-    Mat scores_b = loadScores(file_Scores_b);
-    Mat scores_g = loadScores(file_Scores_g);
-    Mat scores_r = loadScores(file_Scores_r);
-    auto load2 = chrono::high_resolution_clock::now();
-    chrono::duration<double> elapsed_load = load2 - load1;
-    cout<<"Finish loading PCA results and scores. (Duration time: "<<float(elapsed_load.count()) / 60.0f << " min)" <<endl;
-    
-    
-    // Reconstruction
-    cout<<"===Start reconstruction==="<<endl;
-    auto re1 = chrono::high_resolution_clock::now();
-    
+Mat oneImageReconstrucion(PCA pca_b, PCA pca_g, PCA pca_r, Mat scores_b, Mat scores_g, Mat scores_r, int cell_num, Mat bgr[3], int imageIndex){
     int x = image_height/cell_dimension;
     int y = image_width/cell_dimension;
-//    x = y = 1;
     for(int i=0; i<x; i++){
         for(int j=0; j<y; j++){
             // Get cell image pca and score
-//            auto tt1 = chrono::high_resolution_clock::now();
             PCA pcaB, pcaG, pcaR;
             pcaB.mean = pca_b.mean(Rect(0,j+i*y,cell_dimension*cell_dimension,1));
             pcaB.eigenvalues = pca_b.eigenvalues(Rect(j+i*y,0,1,num_components));
@@ -353,49 +332,10 @@ void reconstruction(int cell_num, Mat bgr[3]){
             Mat scoreB = scores_b(Rect(0,imageIndex*cell_num+j+i*y,num_components,1));
             Mat scoreG = scores_g(Rect(0,imageIndex*cell_num+j+i*y,num_components,1));
             Mat scoreR = scores_r(Rect(0,imageIndex*cell_num+j+i*y,num_components,1));
-//            auto tt2 = chrono::high_resolution_clock::now();
-//            chrono::duration<double> e_tt = tt2 - tt1;
-//            cout<<"cout time: "<<e_tt.count()<<endl;
             
-            
-//            Mat Result(1,400,CV_32F);
-//            for(int i=0; i<400; i++){
-//                Result.at<float>(0,i) = 0;
-//            }
-//            // Do backproject without using pca function
-//            auto rr1 = chrono::high_resolution_clock::now();
-//            for(int i=0; i<20; i++){
-//                Result = Result + scoreB.at<float>(0,i) * pcaB.eigenvectors.row(i);
-//            }
-//            Result = Result + pcaB.mean;
-//            auto rr2 = chrono::high_resolution_clock::now();
-//            chrono::duration<double> e_rr = rr2 - rr1;
-//            cout<<"without opencl speedup time: "<<e_rr.count()<<endl;
-            
-//            auto t1 = chrono::high_resolution_clock::now();
             Mat b = pcaB.backProject(scoreB).reshape(1,cell_dimension);
-//            auto t2 = chrono::high_resolution_clock::now();
-//            chrono::duration<double> e_t = t2 - t1;
-//            cout<<"pca with opencl speedup time: "<<e_t.count()<<endl;
-//            cout<<"OpenCL speed up times: "<<e_rr.count()/e_t.count()<<endl;
             Mat g = pcaG.backProject(scoreG).reshape(1,cell_dimension);
             Mat r = pcaR.backProject(scoreR).reshape(1,cell_dimension);
-            
-            
-//            cout<<norm_0_255(Result.reshape(1,cell_dimension))<<endl;;
-//            cout<<norm_0_255(b)<<endl;
-            
-//            auto t2 = chrono::high_resolution_clock::now();
-//            chrono::duration<double> e_t = t2 - t1;
-//            cout<<"pca time: "<<e_t.count()<<endl;
-//            auto t2 = chrono::high_resolution_clock::now();
-//            chrono::duration<double> e_t = t2 - t1;
-//            cout<<"pca time: "<<e_t.count()<<endl;
-            
-            // Mean image
-//            pcaB.mean.reshape(1,cell_dimension).copyTo(mean_bgr[0](Rect(i*cell_dimension,j*cell_dimension,cell_dimension,cell_dimension)));
-//            pcaG.mean.reshape(1,cell_dimension).copyTo(mean_bgr[1](Rect(i*cell_dimension,j*cell_dimension,cell_dimension,cell_dimension)));
-//            pcaR.mean.reshape(1,cell_dimension).copyTo(mean_bgr[2](Rect(i*cell_dimension,j*cell_dimension,cell_dimension,cell_dimension)));
             
             // Reconstruction image
             b.copyTo(bgr[0](Rect(i*cell_dimension,j*cell_dimension,cell_dimension,cell_dimension)));
@@ -404,25 +344,46 @@ void reconstruction(int cell_num, Mat bgr[3]){
             
         }
     }
-    //    Mat reconstruction_b = norm_0_255(mean_bgr[0]);
-    //    Mat reconstruction_g = norm_0_255(mean_bgr[1]);
-    //    Mat reconstruction_r = norm_0_255(mean_bgr[2]);
-//    auto n1 = chrono::high_resolution_clock::now();
     Mat reconstruction_b = norm_0_255(bgr[0]);
     Mat reconstruction_g = norm_0_255(bgr[1]);
     Mat reconstruction_r = norm_0_255(bgr[2]);
-//    auto n2 = chrono::high_resolution_clock::now();
-//    chrono::duration<double> e_n = n2 - n1;
-//    cout<<"normalize time: "<<e_n.count()<<endl;
-    
-//     Put three channel into one bgr image
+    // Put three channel into one bgr image
     Mat resultImage = mergeChannels(reconstruction_b, reconstruction_g, reconstruction_r, oneImagePath);
-    imwrite("ResultImages/head"+to_string(imageIndex+1)+"("+to_string(image_width)+")_cell"+to_string(cell_dimension)+"_"+to_string(num_components)+".png", resultImage);
-    imshow("Reconstruction", resultImage);
+    return resultImage;
+}
+
+void reconstruction(int cell_num, Mat bgr[3]){
+    // Load the PCA result
+    cout<<"===Load PCA results==="<<endl;
+    auto load1 = chrono::high_resolution_clock::now();
+    PCA pca_b = loadPCA(file_PCA_b);
+    PCA pca_g = loadPCA(file_PCA_g);
+    PCA pca_r = loadPCA(file_PCA_r);
+    cout<<"===Load scores==="<<endl;
+    Mat scores_b = loadScores(file_Scores_b);
+    Mat scores_g = loadScores(file_Scores_g);
+    Mat scores_r = loadScores(file_Scores_r);
+    auto load2 = chrono::high_resolution_clock::now();
+    chrono::duration<double> elapsed_load = load2 - load1;
+    cout<<"Finish loading PCA results and scores. (Duration time: "<<elapsed_load.count()<< " s)" <<endl;
+    
+    
+    // Reconstruction
+    cout<<endl<<"===Start reconstruct 900 images==="<<endl;
+    auto re1 = chrono::high_resolution_clock::now();
+    for(int i=0; i<900; i++){
+        int imageIndex = i;
+        Mat resultImage = oneImageReconstrucion(pca_b, pca_g, pca_r, scores_b, scores_g, scores_r, cell_num, bgr, imageIndex);
+        imwrite("ResultImages/head("+to_string(image_width)+")_cell"+to_string(cell_dimension)+"_"+to_string(num_components)+"/head"+to_string(imageIndex+1)+".png", resultImage);
+        cout<<i+1<<" ";
+    }
+    cout<<endl;
+//    imshow("Reconstruction", resultImage);
     auto re2 = chrono::high_resolution_clock::now();
     chrono::duration<double> elapsed_re = re2 - re1;
-    cout<<"Finish reconstruction. (Duration time: "<<elapsed_re.count() << " s)" <<endl;
-    waitKey(0);
+    cout<<"====================="<<endl;
+    cout<<"Finish reconstruction head("+to_string(image_width)+")_cell"+to_string(cell_dimension)+"_"+to_string(num_components)+" (Duration time: "<<elapsed_re.count() << " s)" <<endl;
+//    waitKey(0);
 }
 
 int main(int argc, const char *argv[]) {

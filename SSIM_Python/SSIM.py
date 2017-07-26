@@ -1,4 +1,4 @@
-from skimage.measure import structural_similarity as ssim
+from skimage.measure import compare_ssim as ssim
 import matplotlib.pyplot as plt
 import numpy as np
 import cv2
@@ -68,7 +68,46 @@ images = ("Original", original), ("Contrast", contrast)
 
 # compare the images
 #compare_images(original, original, "Original vs. Original")
-compare_images(original, contrast, "Original vs. Contrast")
+#compare_images(original, contrast, "Original vs. Contrast")
+s = ssim(original, contrast, multichannel=True)
+print(s)
+
+num_components = 30
+cell_dimension = 20
+image_width = 720
+
+# read_file = open("/Users/yinghanxu/Study/Dissertation_ResultData/SSIM/head"+str(image_width)+"_cells"+str(cell_dimension)+"_"+str(num_components)+".txt", "r")
+# content = read_file.readline()
+# t = float(content)
+# read_file.close()
+
+total = 0
+for imageIndex in range(2,901):
+    original = cv2.imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/head_900(resolution"+str(image_width)+")/head"+str(imageIndex)+".png")
+    contrast = cv2.imread("/Users/yinghanxu/Study/GitHub_Dissertation/PCA_opencv_cells/opencv tutorial/ResultImages/head("+str(image_width)+")_cell"+str(cell_dimension)+"_"+str(num_components)+"/head"+str(imageIndex)+".png")
+    s = ssim(original, contrast, multichannel=True)
+    total += s
+    print imageIndex
+average = total/899.0
+print average
+
+file = open("/Users/yinghanxu/Study/GitHub_Dissertation/Experiments/SSIM/head"+str(image_width)+"_cells"+str(cell_dimension)+"_"+str(num_components)+".txt", "w")
+file.write(str(average))
+file.close()
+
+print("Save average SSIM for 899 images. head"+str(image_width)+"_cells"+str(cell_dimension)+"_"+str(num_components))
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
