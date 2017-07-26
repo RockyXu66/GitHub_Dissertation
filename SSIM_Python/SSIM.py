@@ -70,11 +70,17 @@ images = ("Original", original), ("Contrast", contrast)
 #compare_images(original, original, "Original vs. Original")
 #compare_images(original, contrast, "Original vs. Contrast")
 s = ssim(original, contrast, multichannel=True)
-print(s)
+# print(s)
 
-num_components = 30
+num_components = 20
+
 cell_dimension = 20
-image_width = 720
+image_width = 1080
+
+original = cv2.imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/head_900(resolution"+str(image_width)+")/head11.png")
+contrast = cv2.imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/ResultImages/head("+str(image_width)+")_cell"+str(cell_dimension)+"_"+str(num_components)+"/head11.png")
+s = ssim(original, contrast, multichannel=True)
+print s
 
 # read_file = open("/Users/yinghanxu/Study/Dissertation_ResultData/SSIM/head"+str(image_width)+"_cells"+str(cell_dimension)+"_"+str(num_components)+".txt", "r")
 # content = read_file.readline()
@@ -84,7 +90,7 @@ image_width = 720
 total = 0
 for imageIndex in range(2,901):
     original = cv2.imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/head_900(resolution"+str(image_width)+")/head"+str(imageIndex)+".png")
-    contrast = cv2.imread("/Users/yinghanxu/Study/GitHub_Dissertation/PCA_opencv_cells/opencv tutorial/ResultImages/head("+str(image_width)+")_cell"+str(cell_dimension)+"_"+str(num_components)+"/head"+str(imageIndex)+".png")
+    contrast = cv2.imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/ResultImages/head("+str(image_width)+")_cell"+str(cell_dimension)+"_"+str(num_components)+"/head"+str(imageIndex)+".png")
     s = ssim(original, contrast, multichannel=True)
     total += s
     print imageIndex

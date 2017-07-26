@@ -13,12 +13,12 @@ using namespace std;
 using namespace Eigen;
 
 // Number of components to keep for the PCA:
-const int num_components = 25;
+const int num_components = 20;
 const int smallerNum = 40;
 const int cell_dimension = 20;
 //const int imageIndex = 10;
 const int image_num = 900;      //120
-const int image_width = 720;   //960
+const int image_width = 1080;   //960
 const int image_height = image_width;  //960
 
 //String oneImagePath = "/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/artifix_120/artifix1.png";
@@ -374,7 +374,7 @@ void reconstruction(int cell_num, Mat bgr[3]){
     for(int i=0; i<900; i++){
         int imageIndex = i;
         Mat resultImage = oneImageReconstrucion(pca_b, pca_g, pca_r, scores_b, scores_g, scores_r, cell_num, bgr, imageIndex);
-        imwrite("ResultImages/head("+to_string(image_width)+")_cell"+to_string(cell_dimension)+"_"+to_string(num_components)+"/head"+to_string(imageIndex+1)+".png", resultImage);
+        imwrite("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/ResultImages/head("+to_string(image_width)+")_cell"+to_string(cell_dimension)+"_"+to_string(num_components)+"/head"+to_string(imageIndex+1)+".png", resultImage);
         cout<<i+1<<" ";
     }
     cout<<endl;

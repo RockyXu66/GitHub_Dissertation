@@ -13,8 +13,8 @@ using namespace std;
 using namespace Eigen;
 
 // Number of components to keep for the PCA:
-const int num_components = 40;
-const int smallerNum = 40;
+const int num_components = 50;
+const int smallerNum = 50;
 const int cell_dimension = 10;
 const int imageIndex = 10;
 const int image_num = 899;      //120

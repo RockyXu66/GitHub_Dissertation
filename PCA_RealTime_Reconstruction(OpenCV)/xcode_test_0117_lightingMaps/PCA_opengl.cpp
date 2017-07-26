@@ -159,7 +159,7 @@ int main(int argc, const char *argv[])
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
         
-        if(deltaTime<0.25){
+        if(deltaTime<0.3){
             count++;
             totalTime += deltaTime;
         }
@@ -206,10 +206,10 @@ int main(int argc, const char *argv[])
     cout<<"DeltaTime: "<<totalTime/float(count)<<" FPS: "<<1.0f/(totalTime/float(count))<<endl;
     string name = "head"+to_string(image_width)+"_cells"+to_string(cell_dimension)+"_"+to_string(num_components)+".txt";
     if(FPS_record){
-        FileStorage nfs("/Users/yinghanxu/Study/Dissertation_ResultData/SSIM&FPS/"+name, FileStorage::WRITE);
+        FileStorage nfs("/Users/yinghanxu/Study/GitHub_Dissertation/Experiments/FPS/"+name, FileStorage::WRITE);
         nfs << "FPS" << float(1.0f/(totalTime/float(count)));
         nfs.release();
-        cout<<endl<<"====Save average FPS to the file===="<<endl<<endl;
+        cout<<endl<<"====Save average FPS to the file "+name+"===="<<endl<<endl;
     }
     
 //    float test;
