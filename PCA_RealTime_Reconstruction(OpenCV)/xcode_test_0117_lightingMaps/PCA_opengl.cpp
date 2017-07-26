@@ -123,10 +123,15 @@ int main(int argc, const char *argv[])
     
     //Light source
     vec3 lightPos(0.0f, 10.0f, 0.0f);
+
+    char* path = new char[oneImagePath.length() + 1];
+    strcpy(path, oneImagePath.c_str());
+    // do stuff
+    delete [] path;
     
     //Load textures
-    floorTexture = loadTexture("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/artifix_120/artifix1.png");
-    testTexture = loadTexture("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/artifix_120/artifix1.png");
+    floorTexture = loadTexture(path);
+    testTexture = loadTexture(path);
     
     // PCA
     PCA_ pca;
@@ -135,9 +140,17 @@ int main(int argc, const char *argv[])
     GLfloat testTime2 = glfwGetTime();
     GLfloat duration = testTime2 - testTime1;
     int image_width, image_height;
-    string filename = "/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/artifix_120/artifix1.png";
-    unsigned char* newImage = SOIL_load_image(filename.c_str(), &image_width, &image_height, 0, SOIL_LOAD_RGB);
+    unsigned char* newImage = SOIL_load_image(oneImagePath.c_str(), &image_width, &image_height, 0, SOIL_LOAD_RGB);
     
+    Mat bgr[3];
+    split(imread(oneImagePath), bgr);
+    
+    int cell_num = (image_width*image_height)/(cell_dimension*cell_dimension);
+    int x = image_height/cell_dimension;
+    int y = image_width/cell_dimension;
+    
+    GLfloat totalTime = 0;
+    int count = 0;
     // Game loop
     while(!glfwWindowShouldClose(window))
     {
@@ -146,7 +159,13 @@ int main(int argc, const char *argv[])
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
         
-        cout<<"DeltaTime: "<<deltaTime<<" FPS: "<<1.0f/deltaTime<<endl;
+        if(deltaTime<0.25){
+            count++;
+            totalTime += deltaTime;
+        }
+        
+//        cout<<"DeltaTime: "<<deltaTime<<" FPS: "<<1.0f/deltaTime<<endl;
+//        cout<<imageIndex<<endl;
         
         // Check and call events
         glfwPollEvents();
@@ -156,7 +175,7 @@ int main(int argc, const char *argv[])
         glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
-        newImage = pca.reconstruct(imageIndex, newImage);
+        newImage = pca.reconstruct(imageIndex, newImage, bgr, cell_num, x, y);
         testTexture = loadNewTexture(newImage, image_width, image_height);
         
         // Transformation matrices
@@ -183,6 +202,21 @@ int main(int argc, const char *argv[])
         // Swap the buffers
         glfwSwapBuffers(window);
     }
+    cout<<"====================="<<endl;
+    cout<<"DeltaTime: "<<totalTime/float(count)<<" FPS: "<<1.0f/(totalTime/float(count))<<endl;
+    string name = "head"+to_string(image_width)+"_cells"+to_string(cell_dimension)+"_"+to_string(num_components)+".txt";
+    if(FPS_record){
+        FileStorage nfs("/Users/yinghanxu/Study/Dissertation_ResultData/SSIM&FPS/"+name, FileStorage::WRITE);
+        nfs << "FPS" << float(1.0f/(totalTime/float(count)));
+        nfs.release();
+        cout<<endl<<"====Save average FPS to the file===="<<endl<<endl;
+    }
+    
+//    float test;
+//    FileStorage fs("/Users/yinghanxu/Study/Dissertation_ResultData/SSIM&FPS/"+name,FileStorage::READ);
+//    fs["FPS"] >> test;
+//    fs.release();
+//    cout<<test<<endl;
     
     glfwTerminate();
     return 0;
@@ -249,18 +283,36 @@ void Do_Movement()
         camera.ProcessKeyboard(LEFT, deltaTime);
     if(keys[GLFW_KEY_D])
         camera.ProcessKeyboard(RIGHT, deltaTime);
-    if(keys[GLFW_KEY_LEFT]){
-        if(imageIndex==0){
-            cout<<"imageIndex: "<<imageIndex;
-            imageIndex = 119;
-        }else{
-            imageIndex--;
+    if(keys[GLFW_KEY_RIGHT]){
+        imageIndex --;
+        if(imageIndex==800){
+            imageIndex = 700;
+        }else if(imageIndex%100==0){
+            imageIndex += 100;
         }
     }
-    if(keys[GLFW_KEY_RIGHT]){
+    if(keys[GLFW_KEY_LEFT]){
         imageIndex ++;
-        if(imageIndex > 119){
-            imageIndex = 0;
+        if(imageIndex==900){
+            imageIndex = 800;
+        }else if((imageIndex-1)%100==0){
+            imageIndex -= 100;
+        }
+    }
+    if(keys[GLFW_KEY_UP]){
+        if(imageIndex<400||(imageIndex>500&&imageIndex<800)){
+            imageIndex += 100;
+        }
+        if(imageIndex>800){
+            imageIndex -= 800;
+        }
+    }
+    if(keys[GLFW_KEY_DOWN]){
+        if((imageIndex<900&&imageIndex>=600)||(imageIndex<=500&&imageIndex>=100)){
+            imageIndex -= 100;
+        }
+        if(imageIndex<100){
+            imageIndex += 800;
         }
     }
 }

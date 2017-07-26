@@ -19,6 +19,27 @@ using namespace Eigen;
 using namespace std;
 using namespace cv;
 
+// Number of components to keep for the PCA:
+const bool FPS_record = true;
+const int num_components = 60;
+const int smallerNum = 60;
+const int cell_dimension = 30;
+const int image_num = 900;      //120
+const int image_width = 720;   //960
+const int image_height = image_width;  //960
+
+//const String oneImagePath = "/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/artifix_120/artifix1.png";
+const String oneImagePath = "/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/head_900(resolution"+to_string(image_width)+")/head2.png";
+const String d_name = "head";
+
+const String m_name = to_string(smallerNum)+"_cells"+to_string(cell_dimension);
+const String file_PCA_b = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/PCA"+m_name+"_b("+d_name+to_string(image_width)+").txt";
+const String file_PCA_g = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/PCA"+m_name+"_g("+d_name+to_string(image_width)+").txt";
+const String file_PCA_r = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/PCA"+m_name+"_r("+d_name+to_string(image_width)+").txt";
+const String file_Scores_b = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/Scores"+m_name+"_b("+d_name+to_string(image_width)+").txt";
+const String file_Scores_g = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/Scores"+m_name+"_g("+d_name+to_string(image_width)+").txt";
+const String file_Scores_r = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/Scores"+m_name+"_r("+d_name+to_string(image_width)+").txt";
+
 class PCA_{
     
 public:
@@ -38,7 +59,7 @@ public:
     
     void load();
     
-    unsigned char* reconstruct(int imageIndex, unsigned char* image);
+    unsigned char* reconstruct(int imageIndex, unsigned char* image, Mat bgr[3],int cell_num, int x, int y);
     
     unsigned char* CalculateEigen(vector<unsigned char*> images, int width, int height);
     

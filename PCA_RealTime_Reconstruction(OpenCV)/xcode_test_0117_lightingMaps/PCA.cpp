@@ -8,27 +8,7 @@
 
 #include "PCA.hpp"
 
-// Number of components to keep for the PCA:
-const int num_components = 20;
-const int smallerNum = 50;
-const int cell_dimension = 30;
 const int imageIndex = 10;
-const int image_num = 120;      //120
-const int image_width = 960;   //960
-const int image_height = 960;  //960
-
-String oneImagePath = "/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/artifix_120/artifix1.png";
-//String oneImagePath = "/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/head_900/head2.png";
-
-String d_name = "chest";
-String m_name = to_string(smallerNum)+"_cells"+to_string(cell_dimension);
-String file_PCA_b = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/PCA"+m_name+"_b("+d_name+").txt";
-String file_PCA_g = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/PCA"+m_name+"_g("+d_name+").txt";
-String file_PCA_r = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/PCA"+m_name+"_r("+d_name+").txt";
-String file_Scores_b = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/Scores"+m_name+"_b("+d_name+").txt";
-String file_Scores_g = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/Scores"+m_name+"_g("+d_name+").txt";
-String file_Scores_r = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/Scores"+m_name+"_r("+d_name+").txt";
-
 
 // Normalizes a given image into a value range between 0 and 255.
 Mat norm_0_255(const Mat& src) {
@@ -74,7 +54,7 @@ Mat loadScores(const string &file_name){
         cout<<"Cannot load file "<<file_name<<endl;
     }
     fs.release();
-    cout<<"Finish load one scores file"<<endl;
+    cout<<"Finish loading one scores file"<<endl;
     return scores;
 }
 
@@ -157,18 +137,12 @@ void PCA_::load(){
 //    return path;
 }
 
-unsigned char* PCA_::reconstruct(int imageIndex, unsigned char* newImage){
-//    int imageIndex = 10;
-    int cell_num = (image_width*image_height)/(cell_dimension*cell_dimension);
+unsigned char* PCA_::reconstruct(int imageIndex, unsigned char* newImage, Mat bgr[3], int cell_num, int x, int y){
     
     // Reconstruction
 //    cout<<"===Start reconstruction==="<<endl;
-    auto re1 = chrono::high_resolution_clock::now();
+//    auto re1 = chrono::high_resolution_clock::now();
     
-    Mat bgr[3];
-    split(imread(oneImagePath), bgr);
-    int x = image_height/cell_dimension;
-    int y = image_width/cell_dimension;
     for(int i=0; i<x; i++){
         for(int j=0; j<y; j++){
             // Reconstruction image
@@ -191,9 +165,9 @@ unsigned char* PCA_::reconstruct(int imageIndex, unsigned char* newImage){
     // Put three channel into one bgr image
     Mat resultImage = mergeChannels(reconstruction_b, reconstruction_g, reconstruction_r, oneImagePath);
     
-    auto re2 = chrono::high_resolution_clock::now();
-    chrono::duration<double> elapsed_re = re2 - re1;
-    cout<<"Finish reconstruction. (Duration time: "<<elapsed_re.count()<<")"<<endl;
+//    auto re2 = chrono::high_resolution_clock::now();
+//    chrono::duration<double> elapsed_re = re2 - re1;
+//    cout<<"Finish reconstruction. (Duration time: "<<elapsed_re.count()<<")"<<endl;
     
 //    imwrite("ResultImages/head"+to_string(imageIndex+1)+"_"+to_string(num_components)+".png", resultImage);
 //    string p = "ResultImages/head"+to_string(imageIndex+1)+"_"+to_string(num_components)+".png";
@@ -202,7 +176,7 @@ unsigned char* PCA_::reconstruct(int imageIndex, unsigned char* newImage){
 //    path[p.size()] = '\0';
 //    return path;
     
-    auto p1 = chrono::high_resolution_clock::now();
+//    auto p1 = chrono::high_resolution_clock::now();
     // Put data matrix into each channel of the image
     for (int x = 0; x<image_width; x++) {
         for(int y=0; y<image_height; y++){
@@ -211,9 +185,9 @@ unsigned char* PCA_::reconstruct(int imageIndex, unsigned char* newImage){
             newImage[(y+x*image_height) * 3 + 2] = resultImage.at<cv::Vec3b>(x,y)[0];
         }
     }
-    auto p2 = chrono::high_resolution_clock::now();
-    chrono::duration<double> elapsed_p = p2 - p1;
-    cout<<"Put into image. (Duration time: "<<elapsed_p.count()<<")"<<endl;
+//    auto p2 = chrono::high_resolution_clock::now();
+//    chrono::duration<double> elapsed_p = p2 - p1;
+//    cout<<"Put into image. (Duration time: "<<elapsed_p.count()<<")"<<endl;
     
     return newImage;
     
