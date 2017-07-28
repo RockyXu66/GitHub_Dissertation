@@ -86,7 +86,7 @@ void PCA_::load(){
     Mat scores_r = loadScores(file_Scores_r);
     auto load2 = chrono::high_resolution_clock::now();
     chrono::duration<double> elapsed_load = load2 - load1;
-    cout<<"Finish loading PCA results and scores. (Duration time: "<<float(elapsed_load.count()) / 60.0f << " min)" <<endl;
+    cout<<"Finish loading PCA results and scores. (Duration time: "<<elapsed_load.count()<< " s)" <<endl;
     
     int x = image_height/cell_dimension;
     int y = image_width/cell_dimension;
@@ -141,7 +141,7 @@ unsigned char* PCA_::reconstruct(int imageIndex, unsigned char* newImage, Mat bg
     
     // Reconstruction
 //    cout<<"===Start reconstruction==="<<endl;
-//    auto re1 = chrono::high_resolution_clock::now();
+    auto re1 = chrono::high_resolution_clock::now();
     
     for(int i=0; i<x; i++){
         for(int j=0; j<y; j++){
@@ -165,9 +165,9 @@ unsigned char* PCA_::reconstruct(int imageIndex, unsigned char* newImage, Mat bg
     // Put three channel into one bgr image
     Mat resultImage = mergeChannels(reconstruction_b, reconstruction_g, reconstruction_r, oneImagePath);
     
-//    auto re2 = chrono::high_resolution_clock::now();
-//    chrono::duration<double> elapsed_re = re2 - re1;
-//    cout<<"Finish reconstruction. (Duration time: "<<elapsed_re.count()<<")"<<endl;
+    auto re2 = chrono::high_resolution_clock::now();
+    chrono::duration<double> elapsed_re = re2 - re1;
+    cout<<"Reconstruction time: "<<elapsed_re.count()<<" s"<<endl;
     
 //    imwrite("ResultImages/head"+to_string(imageIndex+1)+"_"+to_string(num_components)+".png", resultImage);
 //    string p = "ResultImages/head"+to_string(imageIndex+1)+"_"+to_string(num_components)+".png";

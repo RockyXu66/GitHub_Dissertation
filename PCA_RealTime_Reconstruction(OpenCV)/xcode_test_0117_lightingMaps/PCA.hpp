@@ -21,10 +21,10 @@ using namespace cv;
 
 // Number of components to keep for the PCA:
 const bool FPS_record = false;
-const int num_components = 20;
-const int smallerNum = 40;
-const int cell_dimension = 20;
-const int image_num = 900;      //120
+const int num_components = 19;
+const int smallerNum = 25;
+const int cell_dimension = 10;
+const int image_num = 899;      //120
 const int image_width = 720;   //960
 const int image_height = image_width;  //960
 

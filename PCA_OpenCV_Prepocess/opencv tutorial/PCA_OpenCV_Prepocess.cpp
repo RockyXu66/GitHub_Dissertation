@@ -13,10 +13,10 @@ using namespace std;
 using namespace Eigen;
 
 // Number of components to keep for the PCA:
-const int num_components = 50;
-const int smallerNum = 50;
-const int cell_dimension = 10;
-const int imageIndex = 10;
+const int num_components = 25;
+const int smallerNum = 25;      // Total num of components in saved files
+const int cell_dimension = 10;  // Dimension of cells
+const int imageIndex = 9;
 const int image_num = 899;      //120
 const int image_width = 720;   //960
 const int image_height = image_width;  //960
@@ -128,8 +128,6 @@ PCA loadPCA(const string &file_name){
     return pca_;
 }
 
-
-
 void saveScores(const string &file_name, Mat scores){
     FileStorage fs(file_name, FileStorage::WRITE);
     fs << "scores" << scores;
@@ -148,32 +146,24 @@ Mat loadScores(const string &file_name){
     return scores;
 }
 
-void saveSmallerScores(const string &file_name1, const string &file_name2, const string &new_fileName, int samllerNum){
-    Mat scores1, scores2;
-    FileStorage fs1(file_name1,FileStorage::READ);
-    FileStorage fs2(file_name2,FileStorage::READ);
-    fs1["scores"] >> scores1;
-    fs2["scores"] >> scores2;
-    if(scores1.empty()){
-        cout<<"Cannot load file "<<file_name1<<endl;
+void saveSmallerScores(const string &file_name, const string &new_fileName, int num){
+    Mat scores;
+    FileStorage fs(file_name,FileStorage::READ);
+    fs["scores"] >> scores;
+    if(scores.empty()){
+        cout<<"Cannot load file "<<file_name<<endl;
         return;
     }
-    if(scores2.empty()){
-        cout<<"Cannot load file "<<file_name2<<endl;
-    }
-    fs1.release();
-    fs2.release();
+    fs.release();
 
-    Mat new_scores(scores1.rows*2, scores2.cols, CV_32F);
-    scores1.copyTo(new_scores(Rect(0,0,scores1.cols,scores1.rows)));
-    scores2.copyTo(new_scores(Rect(0,scores1.rows,scores1.cols,scores1.rows)));
-    new_scores = new_scores(Rect(0,0,scores1.cols/2,scores1.rows*2));
+    Mat new_scores = scores(Rect(0,0,num,scores.rows));
     FileStorage nfs(new_fileName, FileStorage::WRITE);
     nfs << "scores" << new_scores;
     nfs.release();
+    cout<<"Save new scores successfully"<<endl;
 }
 
-void saveSmallerPCA(const string &file_name, const string &new_fileName, int samllerNum, int cell_num, int image_num){
+void saveSmallerPCA(const string &file_name, const string &new_fileName, int num, int cell_num, int originalNum){
     PCA pca_;
     FileStorage fs(file_name,FileStorage::READ);
     fs["mean"] >> pca_.mean;
@@ -185,18 +175,19 @@ void saveSmallerPCA(const string &file_name, const string &new_fileName, int sam
     fs["e_vectors"] >> pca_.eigenvectors;
     fs.release();
     
-    pca_.eigenvalues = pca_.eigenvalues(Rect(0,0,pca_.eigenvalues.cols,samllerNum));
+    pca_.eigenvalues = pca_.eigenvalues(Rect(0,0,pca_.eigenvalues.cols,num));
     Mat tmpVectors = pca_.eigenvectors;
-    pca_.eigenvectors = pca_.eigenvectors(Rect(0,0,pca_.eigenvectors.cols,samllerNum*cell_num));
+    pca_.eigenvectors = pca_.eigenvectors(Rect(0,0,pca_.eigenvectors.cols,num*cell_num));
     for(int i=0; i<cell_num; i++){
-        Mat tmp = tmpVectors(Rect(0,i*80,pca_.eigenvectors.cols,samllerNum));
-        tmp.copyTo(pca_.eigenvectors(Rect(0,i*samllerNum,pca_.eigenvectors.cols,samllerNum)));
+        Mat tmp = tmpVectors(Rect(0,i*originalNum,pca_.eigenvectors.cols,num));
+        tmp.copyTo(pca_.eigenvectors(Rect(0,i*num,pca_.eigenvectors.cols,num)));
     }
     FileStorage nfs(new_fileName, FileStorage::WRITE);
     nfs << "mean" << pca_.mean;
     nfs << "e_values" << pca_.eigenvalues;
     nfs << "e_vectors" << pca_.eigenvectors;
     nfs.release();
+    cout<<"Save new pca successfully"<<endl;
 }
 
 Mat mergeChannels(Mat b, Mat g, Mat r, int dimension, string oneImagePath){
@@ -298,7 +289,7 @@ void calculatePCA(int cell_num){
     savePCA(file_PCA_r, pcas_r, cell_num);
     cout<<"Finish saving to files."<<endl;
     
-    cout<<"===Save scores to files==="<<endl;
+    cout<<"===Calculate scores and save to files==="<<endl;
     int pca_dim = pcas_b[0].eigenvectors.rows;
     Mat scores_cells_b(cell_num*image_num, pca_dim, CV_32F);
     Mat scores_cells_g(cell_num*image_num, pca_dim, CV_32F);
@@ -324,7 +315,7 @@ void calculatePCA(int cell_num){
     saveScores(file_Scores_b, scores_cells_b);
     saveScores(file_Scores_g, scores_cells_g);
     saveScores(file_Scores_r, scores_cells_r);
-    cout<<"Finish saving scores to files."<<endl;
+    cout<<"Calculate scores and save to files."<<endl;
 }
 
 void reconstruction(int cell_num, Mat bgr[3]){
@@ -340,7 +331,7 @@ void reconstruction(int cell_num, Mat bgr[3]){
     Mat scores_r = loadScores(file_Scores_r);
     auto load2 = chrono::high_resolution_clock::now();
     chrono::duration<double> elapsed_load = load2 - load1;
-    cout<<"Finish loading PCA results and scores. (Duration time: "<<float(elapsed_load.count()) / 60.0f << " min)" <<endl;
+    cout<<"Finish loading PCA results and scores. (Duration time: "<<elapsed_load.count()<<" s)" <<endl;
     
     
     // Reconstruction
@@ -431,11 +422,13 @@ void reconstruction(int cell_num, Mat bgr[3]){
     
 //     Put three channel into one bgr image
     Mat resultImage = mergeChannels(reconstruction_b, reconstruction_g, reconstruction_r, oneImagePath);
-    imwrite("ResultImages/head"+to_string(imageIndex+1)+"("+to_string(image_width)+")_cell"+to_string(cell_dimension)+"_"+to_string(num_components)+".png", resultImage);
-    imshow("Reconstruction", resultImage);
     auto re2 = chrono::high_resolution_clock::now();
     chrono::duration<double> elapsed_re = re2 - re1;
-    cout<<"Finish reconstruction. (Duration time: "<<elapsed_re.count() << " s)" <<endl;
+    cout<<"Reconstruction time: "<<elapsed_re.count() <<" s"<<endl;
+    imwrite("ResultImages/head"+to_string(imageIndex+1)+"("+to_string(image_width)+")_cell"+to_string(cell_dimension)+"_"+to_string(num_components)+".png", resultImage);
+    imshow("Reconstruction", resultImage);
+    
+    cout<<"Finish reconstruction. "<<endl;
     waitKey(0);
 }
 
@@ -453,7 +446,7 @@ int main(int argc, const char *argv[]) {
     cout<<c.rows<<" "<<c.cols<<endl;
     cout<<d.rows<<" "<<d.cols<<endl;
     
-    calculatePCA(cell_num);
+//    calculatePCA(cell_num);
     /*
     // Crop to cells
     cout<<"Start loading images:"<<endl;
@@ -541,10 +534,13 @@ int main(int argc, const char *argv[]) {
     cout<<"Finish saving scores to files."<<endl;
      */
     
+//    cout<<"Start loading scores"<<endl;
+//    loadScores("/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/Scores50_cells10_b(head720).txt");
+//    cout<<"Loading successfully"<<endl;
     
-//    Mat bgr[3];
-//    split(imread(oneImagePath), bgr);
-//    reconstruction(cell_num, bgr);
+    Mat bgr[3];
+    split(imread(oneImagePath), bgr);
+    reconstruction(cell_num, bgr);
     /*
     // Load the PCA result
     cout<<"===Load PCA results==="<<endl;
@@ -620,8 +616,8 @@ int main(int argc, const char *argv[]) {
     waitKey(0);
     */
     
-//    saveSmallerScores("/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/Scores80_cells20_b1(head1080).txt","/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/Scores80_cells20_b2(head1080).txt", "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/Scores40_cells20_b(head1080).txt", 40);
-//    saveSmallerPCA("/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/PCA80_cells20_g(head1080).txt", "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/PCA40_cells20_g(head1080).txt", 40, cell_num, 80);
+//    saveSmallerScores("/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/Scores50_cells10_g(head720).txt", "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/Scores25_cells10_g(head720).txt", 25);
+//    saveSmallerPCA("/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/PCA50_cells10_g(head720).txt", "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/PCA25_cells10_g(head720).txt", 25, cell_num, 50);
     
     /*
     string line;
