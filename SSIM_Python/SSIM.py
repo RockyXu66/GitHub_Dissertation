@@ -72,8 +72,8 @@ def compare_images(imageA, imageB, title):
 #s = ssim(original, contrast, multichannel=True)
 #print(s)
 
-original = cv2.imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/head_900(resolution720)/head11.png");
-contrast = cv2.imread("/Users/yinghanxu/Study/GitHub_Dissertation/PCA_OpenCV_Prepocess/opencv tutorial/ResultImages/head11(720)_cell10_25.png");
+original = cv2.imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/head_900(resolution540)/head11.png");
+contrast = cv2.imread("/Users/yinghanxu/Study/GitHub_Dissertation/PCA_OpenCV_Prepocess/opencv tutorial/ResultImages/head11(540)_cell10_16.png");
 test = ssim(original, contrast, multichannel=True)
 print test
 
