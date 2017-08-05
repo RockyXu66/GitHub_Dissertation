@@ -21,11 +21,11 @@ using namespace cv;
 
 // Number of components to keep for the PCA:
 const bool FPS_record = false;
-const int num_components = 19;
-const int smallerNum = 30;
-const int cell_dimension = 10;
+const int num_components = 6;
+const int smallerNum = 10;
+const int cell_dimension = 5;
 const int image_num = 899;      //120
-const int image_width = 540;   //960
+const int image_width = 720;   //960
 const int image_height = image_width;  //960
 
 //const String oneImagePath = "/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/artifix_120/artifix1.png";

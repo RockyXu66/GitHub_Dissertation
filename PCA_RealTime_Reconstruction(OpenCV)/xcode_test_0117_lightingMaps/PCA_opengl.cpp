@@ -178,6 +178,8 @@ int main(int argc, const char *argv[])
         newImage = pca.reconstruct(imageIndex, newImage, bgr, cell_num, x, y);
         testTexture = loadNewTexture(newImage, image_width, image_height);
         
+//        cout<<imageIndex<<endl;
+        
         // Transformation matrices
         mat4 projection = perspective(camera.Zoom, (float)screenWidth/(float)screenHeight, 0.1f, 100.0f);
         mat4 view = camera.GetViewMatrix();
@@ -283,22 +285,42 @@ void Do_Movement()
         camera.ProcessKeyboard(LEFT, deltaTime);
     if(keys[GLFW_KEY_D])
         camera.ProcessKeyboard(RIGHT, deltaTime);
-    if(keys[GLFW_KEY_RIGHT]){
-        imageIndex --;
-        if(imageIndex==800){
-            imageIndex = 700;
-        }else if(imageIndex%100==0){
-            imageIndex += 100;
+    if(image_num==900){
+        if(keys[GLFW_KEY_RIGHT]){
+            imageIndex --;
+            if(imageIndex==800){
+                imageIndex = 700;
+            }else if(imageIndex%100==0){
+                imageIndex += 100;
+            }
+        }
+        if(keys[GLFW_KEY_LEFT]){
+            imageIndex ++;
+            if(imageIndex==900){
+                imageIndex = 800;
+            }else if((imageIndex-1)%100==0){
+                imageIndex -= 100;
+            }
+        }
+    }else if(image_num==899){
+        if(keys[GLFW_KEY_RIGHT]){
+            imageIndex --;
+            if(imageIndex==799){
+                imageIndex = 898;
+            }else{ if((imageIndex+1)%100==0){
+                imageIndex += 100;
+            }}
+        }
+        if(keys[GLFW_KEY_LEFT]){
+            imageIndex ++;
+            if(imageIndex==899){
+                imageIndex = 800;
+            }else{ if((imageIndex)%100==0){
+                imageIndex -= 100;
+            }}
         }
     }
-    if(keys[GLFW_KEY_LEFT]){
-        imageIndex ++;
-        if(imageIndex==900){
-            imageIndex = 800;
-        }else if((imageIndex-1)%100==0){
-            imageIndex -= 100;
-        }
-    }
+    
     if(keys[GLFW_KEY_UP]){
         if(imageIndex<400||(imageIndex>500&&imageIndex<800)){
             imageIndex += 100;

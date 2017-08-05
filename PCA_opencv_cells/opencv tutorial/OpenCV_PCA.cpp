@@ -13,12 +13,12 @@ using namespace std;
 using namespace Eigen;
 
 // Number of components to keep for the PCA:
-const int num_components = 20;
-const int smallerNum = 40;
-const int cell_dimension = 20;
+const int num_components = 70;
+const int smallerNum = 90;
+const int cell_dimension = 30;
 //const int imageIndex = 10;
-const int image_num = 900;      //120
-const int image_width = 1080;   //960
+const int image_num = 899;      //120
+const int image_width = 720;   //960
 const int image_height = image_width;  //960
 
 //String oneImagePath = "/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/artifix_120/artifix1.png";
@@ -352,7 +352,7 @@ Mat oneImageReconstrucion(PCA pca_b, PCA pca_g, PCA pca_r, Mat scores_b, Mat sco
     return resultImage;
 }
 
-void reconstruction(int cell_num, Mat bgr[3]){
+void reconstructionAllImages(int cell_num, Mat bgr[3]){
     // Load the PCA result
     cout<<"===Load PCA results==="<<endl;
     auto load1 = chrono::high_resolution_clock::now();
@@ -369,12 +369,12 @@ void reconstruction(int cell_num, Mat bgr[3]){
     
     
     // Reconstruction
-    cout<<endl<<"===Start reconstruct 900 images==="<<endl;
+    cout<<endl<<"===Start reconstruct "+to_string(image_num)+" images==="<<endl;
     auto re1 = chrono::high_resolution_clock::now();
-    for(int i=0; i<900; i++){
+    for(int i=0; i<image_num; i++){
         int imageIndex = i;
         Mat resultImage = oneImageReconstrucion(pca_b, pca_g, pca_r, scores_b, scores_g, scores_r, cell_num, bgr, imageIndex);
-        imwrite("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/ResultImages/head("+to_string(image_width)+")_cell"+to_string(cell_dimension)+"_"+to_string(num_components)+"/head"+to_string(imageIndex+1)+".png", resultImage);
+        imwrite("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/ResultImages/head("+to_string(image_width)+")_cell"+to_string(cell_dimension)+"_"+to_string(num_components)+"/head"+to_string(imageIndex+1+1)+".png", resultImage);
         cout<<i+1<<" ";
     }
     cout<<endl;
@@ -491,7 +491,7 @@ int main(int argc, const char *argv[]) {
     
     Mat bgr[3];
     split(imread(oneImagePath), bgr);
-    reconstruction(cell_num, bgr);
+    reconstructionAllImages(cell_num, bgr);
     /*
     // Load the PCA result
     cout<<"===Load PCA results==="<<endl;

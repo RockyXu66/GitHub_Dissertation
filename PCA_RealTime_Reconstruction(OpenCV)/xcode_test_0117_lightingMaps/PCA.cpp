@@ -167,7 +167,7 @@ unsigned char* PCA_::reconstruct(int imageIndex, unsigned char* newImage, Mat bg
     
     auto re2 = chrono::high_resolution_clock::now();
     chrono::duration<double> elapsed_re = re2 - re1;
-    cout<<"Reconstruction time: "<<elapsed_re.count()<<" s"<<endl;
+//    cout<<"Reconstruction time: "<<elapsed_re.count()<<" s"<<endl;
     
 //    imwrite("ResultImages/head"+to_string(imageIndex+1)+"_"+to_string(num_components)+".png", resultImage);
 //    string p = "ResultImages/head"+to_string(imageIndex+1)+"_"+to_string(num_components)+".png";

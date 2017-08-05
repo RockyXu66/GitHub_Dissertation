@@ -1,0 +1,17 @@
+which are good quality 
+Which are good for real-time
+
+Each resolution should have a graph
+Different resolution in a graph
+
+Blur the edges
+A bigger B bigger. Put together
+
+Interactive rate
+
+IBR
+Volume rendering
+PCA
+SSIM
+
+
