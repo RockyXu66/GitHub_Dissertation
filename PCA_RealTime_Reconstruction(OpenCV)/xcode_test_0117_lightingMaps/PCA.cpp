@@ -137,7 +137,7 @@ void PCA_::load(){
 //    return path;
 }
 
-unsigned char* PCA_::reconstruct(int imageIndex, unsigned char* newImage, Mat bgr[3], int cell_num, int x, int y){
+unsigned char* PCA_::reconstruct(int imageIndex, unsigned char* newImage, Mat bgr[3], int cell_num, int x, int y, bool isBlur){
     
     // Reconstruction
 //    cout<<"===Start reconstruction==="<<endl;
@@ -164,6 +164,28 @@ unsigned char* PCA_::reconstruct(int imageIndex, unsigned char* newImage, Mat bg
     Mat reconstruction_r = norm_0_255(bgr[2]);
     // Put three channel into one bgr image
     Mat resultImage = mergeChannels(reconstruction_b, reconstruction_g, reconstruction_r, oneImagePath);
+    
+    if(isBlur){
+        Mat smoothedImage = resultImage.clone();
+        int kernelSize = 3;
+        medianBlur (smoothedImage, smoothedImage, kernelSize);
+        for(int i=1; i<resultImage.rows-1; i++){
+            for(int j=1; j<resultImage.cols-1; j++){
+                if(j%cell_dimension==0){
+                    resultImage.at<Vec3b>(i, j-1) = smoothedImage.at<Vec3b>(i, j-1);
+                    resultImage.at<Vec3b>(i, j) = smoothedImage.at<Vec3b>(i, j);
+                    resultImage.at<Vec3b>(i, j+1) = smoothedImage.at<Vec3b>(i, j+1);
+                    resultImage.at<Vec3b>(i, j+2) = smoothedImage.at<Vec3b>(i, j+2);
+                }
+                if(i%cell_dimension==0){
+                    resultImage.at<Vec3b>(i-1, j) = smoothedImage.at<Vec3b>(i-1, j);
+                    resultImage.at<Vec3b>(i, j) = smoothedImage.at<Vec3b>(i, j);
+                    resultImage.at<Vec3b>(i+1, j) = smoothedImage.at<Vec3b>(i+1, j);
+                    resultImage.at<Vec3b>(i+2, j) = smoothedImage.at<Vec3b>(i+2, j);
+                }
+            }
+        }
+    }
     
     auto re2 = chrono::high_resolution_clock::now();
     chrono::duration<double> elapsed_re = re2 - re1;

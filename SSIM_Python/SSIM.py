@@ -37,6 +37,31 @@ def compare_images(imageA, imageB, title):
 	# show the images
 	plt.show()
 
+def cal_SSIM(num_components, isSmoothed, cell_dimension, image_width):
+	total = 0
+	for imageIndex in range(2,901):
+   		original = cv2.imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/head_900(resolution"+str(image_width)+")/head"+str(imageIndex)+".png")
+   		if isSmoothed:
+			contrast = cv2.imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/ResultImages_Smoothed/head("+str(image_width)+")_cell"+str(cell_dimension)+"_"+str(num_components)+"/head"+str(imageIndex)+".png")
+   		else: 
+   			contrast = cv2.imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/ResultImages/head("+str(image_width)+")_cell"+str(cell_dimension)+"_"+str(num_components)+"/head"+str(imageIndex)+".png")
+   		s = ssim(original, contrast, multichannel=True)
+   		total += s
+   		print imageIndex, s
+
+	average = total/899.0
+	print average
+
+	if isSmoothed:
+		file = open("/Users/yinghanxu/Study/GitHub_Dissertation/Experiments/SSIM/head"+str(image_width)+"_cells"+str(cell_dimension)+"_"+str(num_components)+"_Smoothed.txt", "w")
+	else:	
+		file = open("/Users/yinghanxu/Study/GitHub_Dissertation/Experiments/SSIM/head"+str(image_width)+"_cells"+str(cell_dimension)+"_"+str(num_components)+".txt", "w")
+	file.write(str(average))
+	file.close()
+
+	print("Save average SSIM for 899 images. head"+str(image_width)+"_cells"+str(cell_dimension)+"_"+str(num_components))
+
+
 # load the images -- the original, the original + contrast,
 # and the original + photoshop
 #original = cv2.imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/artifix_120/artifix11.png")
@@ -77,28 +102,40 @@ def compare_images(imageA, imageB, title):
 # test = ssim(original, contrast, multichannel=True)
 # print test
 
-num_components = 55
-
-cell_dimension = 20
+num_components = 4
+isSmoothed = True
+cell_dimension = 5
 image_width = 720
 
-original = cv2.imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/head_900(resolution"+str(image_width)+")/head11.png")
-contrast = cv2.imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/ResultImages_Smoothed/head11_smoothedImage_blur_5.png");
-# contrast = cv2.imread("/Users/yinghanxu/Study/GitHub_Dissertation/PCA_OpenCV_Prepocess/opencv tutorial/ResultImages/head11("+str(image_width)+")_cell"+str(cell_dimension)+"_"+str(num_components)+".png");
-s = ssim(original, contrast, multichannel=True)
-print s
+# original = cv2.imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/head_900(resolution"+str(image_width)+")/head11.png")
+# contrast = cv2.imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/ResultImages_Smoothed/head11_smoothedImage_blur_3.png");
+# # contrast = cv2.imread("/Users/yinghanxu/Study/GitHub_Dissertation/PCA_OpenCV_Prepocess/opencv tutorial/ResultImages/head11("+str(image_width)+")_cell"+str(cell_dimension)+"_"+str(num_components)+".png");
+# s = ssim(original, contrast, multichannel=True)
+# print s
+
+cal_SSIM(8, isSmoothed, cell_dimension, image_width)
+cal_SSIM(7, isSmoothed, cell_dimension, image_width)
+cal_SSIM(6, isSmoothed, cell_dimension, image_width)
+cal_SSIM(5, isSmoothed, cell_dimension, image_width)
+cal_SSIM(4, isSmoothed, cell_dimension, image_width)
 
 # total = 0
 # for imageIndex in range(2,901):
 #    original = cv2.imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/head_900(resolution"+str(image_width)+")/head"+str(imageIndex)+".png")
-#    contrast = cv2.imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/ResultImages/head("+str(image_width)+")_cell"+str(cell_dimension)+"_"+str(num_components)+"/head"+str(imageIndex)+".png")
+#    if isSmoothed:
+# 	contrast = cv2.imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/ResultImages_Smoothed/head("+str(image_width)+")_cell"+str(cell_dimension)+"_"+str(num_components)+"/head"+str(imageIndex)+".png")
+#    else: 
+#    	contrast = cv2.imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/ResultImages/head("+str(image_width)+")_cell"+str(cell_dimension)+"_"+str(num_components)+"/head"+str(imageIndex)+".png")
 #    s = ssim(original, contrast, multichannel=True)
 #    total += s
 #    print imageIndex, s
 # average = total/899.0
 # print average
 
-# file = open("/Users/yinghanxu/Study/GitHub_Dissertation/Experiments/SSIM/head"+str(image_width)+"_cells"+str(cell_dimension)+"_"+str(num_components)+".txt", "w")
+# if isSmoothed:
+# 	file = open("/Users/yinghanxu/Study/GitHub_Dissertation/Experiments/SSIM/head"+str(image_width)+"_cells"+str(cell_dimension)+"_"+str(num_components)+"_Smoothed.txt", "w")
+# else:	
+# 	file = open("/Users/yinghanxu/Study/GitHub_Dissertation/Experiments/SSIM/head"+str(image_width)+"_cells"+str(cell_dimension)+"_"+str(num_components)+".txt", "w")
 # file.write(str(average))
 # file.close()
 

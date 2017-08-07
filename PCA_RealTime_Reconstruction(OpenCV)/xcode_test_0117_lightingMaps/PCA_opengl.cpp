@@ -58,6 +58,7 @@ GLfloat lastFrame = 0.0f;
 GLuint floorTexture, testTexture;
 GLuint planeVAO;
 GLuint imageIndex = 10;
+bool isSmoothed = false;
 
 // The MAIN function, from here we start our application and run our Game loop
 int main(int argc, const char *argv[])
@@ -175,7 +176,7 @@ int main(int argc, const char *argv[])
         glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
-        newImage = pca.reconstruct(imageIndex, newImage, bgr, cell_num, x, y);
+        newImage = pca.reconstruct(imageIndex, newImage, bgr, cell_num, x, y, isSmoothed);
         testTexture = loadNewTexture(newImage, image_width, image_height);
         
 //        cout<<imageIndex<<endl;
@@ -206,7 +207,12 @@ int main(int argc, const char *argv[])
     }
     cout<<"====================="<<endl;
     cout<<"DeltaTime: "<<totalTime/float(count)<<" FPS: "<<1.0f/(totalTime/float(count))<<endl;
-    string name = "head"+to_string(image_width)+"_cells"+to_string(cell_dimension)+"_"+to_string(num_components)+".txt";
+    string name = "";
+    if(isSmoothed){
+        name = "head"+to_string(image_width)+"_cells"+to_string(cell_dimension)+"_"+to_string(num_components)+"_Smoothed.txt";
+    }else{
+        name = "head"+to_string(image_width)+"_cells"+to_string(cell_dimension)+"_"+to_string(num_components)+".txt";
+    }
     if(FPS_record){
         FileStorage nfs("/Users/yinghanxu/Study/GitHub_Dissertation/Experiments/FPS/"+name, FileStorage::WRITE);
         nfs << "FPS" << float(1.0f/(totalTime/float(count)));
@@ -346,8 +352,13 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
         glfwSetWindowShouldClose(window, GL_TRUE);
     
     if(action == GLFW_PRESS){
-//        switch (key) {
-//                
+        switch (key) {
+            case GLFW_KEY_1:
+                isSmoothed = true;
+                break;
+            case GLFW_KEY_2:
+                isSmoothed = false;
+                break;
 //            case GLFW_KEY_LEFT:
 //                if(imageIndex==0){
 //                    cout<<"imageIndex: "<<imageIndex;
@@ -362,10 +373,10 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 //                    imageIndex = 0;
 //                }
 //                break;
-//                
-//            default:
-//                break;
-//        }
+                
+            default:
+                break;
+        }
         keys[key] = true;
     }
     else if(action == GLFW_RELEASE)

@@ -1,0 +1,4 @@
+28 April 2011  HDR-VDP 2.0
+
+   This is the initial release, included with the supplementary
+   materials of the SIGGRAPH'11 paper.

@@ -36,8 +36,9 @@ dependencies: \
   /usr/local/include/opencv2/imgproc/types_c.h \
   /usr/local/include/opencv2/imgcodecs/imgcodecs_c.h \
   /usr/local/include/opencv2/videoio/videoio_c.h \
-  /usr/local/include/Eigen/Eigen /usr/local/include/Eigen/Dense \
-  /usr/local/include/Eigen/Core \
+  /usr/local/include/opencv2/imgproc/imgproc.hpp \
+  /usr/local/include/opencv2/imgproc.hpp /usr/local/include/Eigen/Eigen \
+  /usr/local/include/Eigen/Dense /usr/local/include/Eigen/Core \
   /usr/local/include/Eigen/src/Core/util/DisableStupidWarnings.h \
   /usr/local/include/Eigen/src/Core/util/Macros.h \
   /usr/local/include/Eigen/src/Core/util/MKL_support.h \

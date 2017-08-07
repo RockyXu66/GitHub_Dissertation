@@ -21,9 +21,9 @@ using namespace cv;
 
 // Number of components to keep for the PCA:
 const bool FPS_record = false;
-const int num_components = 6;
-const int smallerNum = 10;
-const int cell_dimension = 5;
+const int num_components = 10;
+const int smallerNum = 25;
+const int cell_dimension = 10;
 const int image_num = 899;      //120
 const int image_width = 720;   //960
 const int image_height = image_width;  //960
@@ -59,7 +59,7 @@ public:
     
     void load();
     
-    unsigned char* reconstruct(int imageIndex, unsigned char* image, Mat bgr[3],int cell_num, int x, int y);
+    unsigned char* reconstruct(int imageIndex, unsigned char* image, Mat bgr[3],int cell_num, int x, int y, bool isBlur);
     
     unsigned char* CalculateEigen(vector<unsigned char*> images, int width, int height);
     

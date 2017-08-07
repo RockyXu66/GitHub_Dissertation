@@ -16,7 +16,7 @@ using namespace cv;
 
 int main(int argc, const char * argv[]) {
     // insert code here...
-    Mat img = imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/ResultImages/head(720)_cell30_40/head11.png");
+    Mat img = imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/ResultImages/head(720)_cell20_30/head11.png");
     
     Mat smoothedImage = img.clone();
     Mat resultImage = img.clone();
@@ -38,18 +38,19 @@ int main(int argc, const char * argv[]) {
 //        }
 //    }
     int kernelSize = 3;
+    int cell_dimension = 20;
     medianBlur (smoothedImage, smoothedImage, kernelSize);
 //    blur(smoothedImage, smoothedImage, Size(kernelSize, kernelSize));
     
     for(int i=1; i<img.rows-1; i++){
         for(int j=1; j<img.cols-1; j++){
-            if(j%30==0){
+            if(j%cell_dimension==0){
                 resultImage.at<Vec3b>(i, j-1) = smoothedImage.at<Vec3b>(i, j-1);
                 resultImage.at<Vec3b>(i, j) = smoothedImage.at<Vec3b>(i, j);
                 resultImage.at<Vec3b>(i, j+1) = smoothedImage.at<Vec3b>(i, j+1);
                 resultImage.at<Vec3b>(i, j+2) = smoothedImage.at<Vec3b>(i, j+2);
             }
-            if(i%30==0){
+            if(i%cell_dimension==0){
                 resultImage.at<Vec3b>(i-1, j) = smoothedImage.at<Vec3b>(i-1, j);
                 resultImage.at<Vec3b>(i, j) = smoothedImage.at<Vec3b>(i, j);
                 resultImage.at<Vec3b>(i+1, j) = smoothedImage.at<Vec3b>(i+1, j);
