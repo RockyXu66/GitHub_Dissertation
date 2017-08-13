@@ -175,7 +175,16 @@ namespace qm
 using namespace qm;
 
 int main(){
-    compute_quality_metrics("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/artifix_120/artifix11.png", "/Users/yinghanxu/Study/GitHub_Dissertation/PCA_opencv_cells/opencv tutorial/ResultImages/artifix11_cell15_20.png", 20);
+//    compute_quality_metrics("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/artifix_120/artifix11.png", "/Users/yinghanxu/Study/GitHub_Dissertation/PCA_opencv_cells/opencv tutorial/ResultImages/artifix11_cell15_20.png", 20);
+
+    
+    // Crop and save a specific area of an image
+    int cell_dimension = 20;
+    int num_components = 40;
+    Mat img = imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/ResultImages/head(720)_cell"+to_string(cell_dimension)+"_"+to_string(num_components)+"/head11.png");
+    Mat area = img(Rect(360, 360, 300, 300));
+    imwrite(to_string(cell_dimension)+"_"+to_string(num_components)+".png", area);
+    
     return 0;
 }
 

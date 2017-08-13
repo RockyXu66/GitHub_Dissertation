@@ -139,7 +139,25 @@ void PCA_::load(){
 
 unsigned char* PCA_::reconstruct(int imageIndex, unsigned char* newImage, Mat bgr[3], int cell_num, int x, int y, bool isBlur){
     
-    // Reconstruction
+    vector<Mat> bs, gs,rs;
+    if(CPU_only){
+        for(int i=0; i<x*y; i++){
+            Mat b(1,cell_dimension*cell_dimension,CV_32F);
+            Mat g(1,cell_dimension*cell_dimension,CV_32F);
+            Mat r(1,cell_dimension*cell_dimension,CV_32F);
+            for(int k=0; k<cell_dimension*cell_dimension; k++){
+                b.at<float>(0,k) = 0;
+                g.at<float>(0,k) = 0;
+                r.at<float>(0,k) = 0;
+            }
+            bs.push_back(b);
+            gs.push_back(g);
+            rs.push_back(r);
+        }
+    }
+    
+    
+    
 //    cout<<"===Start reconstruction==="<<endl;
     auto re1 = chrono::high_resolution_clock::now();
     
@@ -150,9 +168,32 @@ unsigned char* PCA_::reconstruct(int imageIndex, unsigned char* newImage, Mat bg
             Mat scoreB = scores_b(Rect(0,imageIndex*cell_num+j+i*y,num_components,1));
             Mat scoreG = scores_g(Rect(0,imageIndex*cell_num+j+i*y,num_components,1));
             Mat scoreR = scores_r(Rect(0,imageIndex*cell_num+j+i*y,num_components,1));
-            Mat b = pcas_b[index].backProject(scoreB).reshape(1,cell_dimension);
-            Mat g = pcas_g[index].backProject(scoreG).reshape(1,cell_dimension);
-            Mat r = pcas_r[index].backProject(scoreR).reshape(1,cell_dimension);
+            
+            Mat b, g, r;
+            
+            if(CPU_only){
+                // Reconstruction without using opencv pca function
+                b = bs[j+i*y];
+                g = gs[j+i*y];
+                r = rs[j+i*y];
+                
+                for(int k=0; k<num_components; k++){
+                    b = b + scoreB.at<float>(0,k) * pcas_b[index].eigenvectors.row(k);
+                    g = g + scoreG.at<float>(0,k) * pcas_g[index].eigenvectors.row(k);
+                    r = r + scoreR.at<float>(0,k) * pcas_r[index].eigenvectors.row(k);
+                }
+                b = b + pcas_b[index].mean;
+                g = g + pcas_g[index].mean;
+                r = r + pcas_r[index].mean;
+                b = b.reshape(1,cell_dimension);
+                g = g.reshape(1,cell_dimension);
+                r = r.reshape(1,cell_dimension);
+            }else{
+                b = pcas_b[index].backProject(scoreB).reshape(1,cell_dimension);
+                g = pcas_g[index].backProject(scoreG).reshape(1,cell_dimension);
+                r = pcas_r[index].backProject(scoreR).reshape(1,cell_dimension);
+            }
+            
             
             b.copyTo(bgr[0](Rect(i*cell_dimension,j*cell_dimension,cell_dimension,cell_dimension)));
             g.copyTo(bgr[1](Rect(i*cell_dimension,j*cell_dimension,cell_dimension,cell_dimension)));

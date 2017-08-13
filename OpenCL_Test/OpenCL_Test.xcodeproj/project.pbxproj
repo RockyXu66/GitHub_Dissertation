@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		B11FD2C01F26108400A2F36F /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B11FD2BF1F26108400A2F36F /* main.cpp */; };
 		B11FD2C71F2610E000A2F36F /* mykernel.cl in Sources */ = {isa = PBXBuildFile; fileRef = B11FD2C61F2610E000A2F36F /* mykernel.cl */; };
+		B1F4FCC61F3CF04500F29B43 /* simpleOpenCL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1F4FCC51F3CF04500F29B43 /* simpleOpenCL.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -27,6 +28,7 @@
 		B11FD2BC1F26108400A2F36F /* OpenCL_Test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = OpenCL_Test; sourceTree = BUILT_PRODUCTS_DIR; };
 		B11FD2BF1F26108400A2F36F /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		B11FD2C61F2610E000A2F36F /* mykernel.cl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.opencl; path = mykernel.cl; sourceTree = "<group>"; };
+		B1F4FCC51F3CF04500F29B43 /* simpleOpenCL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = simpleOpenCL.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +63,7 @@
 			children = (
 				B11FD2BF1F26108400A2F36F /* main.cpp */,
 				B11FD2C61F2610E000A2F36F /* mykernel.cl */,
+				B1F4FCC51F3CF04500F29B43 /* simpleOpenCL.cpp */,
 			);
 			path = OpenCL_Test;
 			sourceTree = "<group>";
@@ -124,6 +127,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B11FD2C01F26108400A2F36F /* main.cpp in Sources */,
+				B1F4FCC61F3CF04500F29B43 /* simpleOpenCL.cpp in Sources */,
 				B11FD2C71F2610E000A2F36F /* mykernel.cl in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -297,6 +301,7 @@
 				B11FD2C51F26108400A2F36F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -62,6 +62,18 @@ def cal_SSIM(num_components, isSmoothed, cell_dimension, image_width):
 	print("Save average SSIM for 899 images. head"+str(image_width)+"_cells"+str(cell_dimension)+"_"+str(num_components))
 
 
+def cal_SSIM_For_Smoothed(cell_dimension, num_components, kernelSize):
+	original = cv2.imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/head_900(resolution720)/head11.png")
+   	contrast = cv2.imread("/Users/yinghanxu/Study/GitHub_Dissertation/ImageSmooth/ImageSmooth/medianBlur_cell_"+str(cell_dimension)+"_"+str(num_components)+"_"+str(kernelSize)+".png");
+   	s = ssim(original, contrast, multichannel=True)
+   	print "cell_"+str(cell_dimension)+"_"+str(num_components)+"_"+str(kernelSize), s
+
+def cal_SSIM_For_UnSmoothed(cell_dimension, num_components, kernelSize):
+	original = cv2.imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/head_900(resolution720)/head11.png")
+   	contrast = cv2.imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/ResultImages/head(720)_cell"+str(cell_dimension)+"_"+str(num_components)+"/head11.png");
+   	s = ssim(original, contrast, multichannel=True)
+   	print "cell_"+str(cell_dimension)+"_"+str(num_components), s
+
 # load the images -- the original, the original + contrast,
 # and the original + photoshop
 #original = cv2.imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/artifix_120/artifix11.png")
@@ -102,10 +114,18 @@ def cal_SSIM(num_components, isSmoothed, cell_dimension, image_width):
 # test = ssim(original, contrast, multichannel=True)
 # print test
 
-num_components = 4
-isSmoothed = True
-cell_dimension = 5
 image_width = 720
+cell_dimension = 30
+num_components = 60
+isSmoothed = True
+kernelSize = 1
+
+# num_components = 60
+cal_SSIM_For_UnSmoothed(cell_dimension, num_components, 1)
+
+
+
+
 
 # original = cv2.imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/head_900(resolution"+str(image_width)+")/head11.png")
 # contrast = cv2.imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/ResultImages_Smoothed/head11_smoothedImage_blur_3.png");
@@ -113,11 +133,11 @@ image_width = 720
 # s = ssim(original, contrast, multichannel=True)
 # print s
 
-cal_SSIM(8, isSmoothed, cell_dimension, image_width)
-cal_SSIM(7, isSmoothed, cell_dimension, image_width)
-cal_SSIM(6, isSmoothed, cell_dimension, image_width)
-cal_SSIM(5, isSmoothed, cell_dimension, image_width)
-cal_SSIM(4, isSmoothed, cell_dimension, image_width)
+# cal_SSIM(8, isSmoothed, cell_dimension, image_width)
+# cal_SSIM(7, isSmoothed, cell_dimension, image_width)
+# cal_SSIM(6, isSmoothed, cell_dimension, image_width)
+# cal_SSIM(5, isSmoothed, cell_dimension, image_width)
+# cal_SSIM(4, isSmoothed, cell_dimension, image_width)
 
 # total = 0
 # for imageIndex in range(2,901):

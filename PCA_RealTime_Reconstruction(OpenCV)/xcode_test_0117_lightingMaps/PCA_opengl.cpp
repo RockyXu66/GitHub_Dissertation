@@ -160,11 +160,12 @@ int main(int argc, const char *argv[])
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
         
-        if(deltaTime<0.3){
+        if(deltaTime<0.5){
             count++;
             totalTime += deltaTime;
         }
         
+//        cout<<deltaTime<<endl;
 //        cout<<"DeltaTime: "<<deltaTime<<" FPS: "<<1.0f/deltaTime<<endl;
 //        cout<<imageIndex<<endl;
         
@@ -204,17 +205,28 @@ int main(int argc, const char *argv[])
         
         // Swap the buffers
         glfwSwapBuffers(window);
+        
+        if(autoExit){
+            if(count == autoExitCount){
+                break;
+            }
+        }
     }
     cout<<"====================="<<endl;
     cout<<"DeltaTime: "<<totalTime/float(count)<<" FPS: "<<1.0f/(totalTime/float(count))<<endl;
+    cout<<"Total time: "<<totalTime<<" Total counts: "<<count<<endl;
     string name = "";
+    string preName = "";
     if(isSmoothed){
         name = "head"+to_string(image_width)+"_cells"+to_string(cell_dimension)+"_"+to_string(num_components)+"_Smoothed.txt";
     }else{
         name = "head"+to_string(image_width)+"_cells"+to_string(cell_dimension)+"_"+to_string(num_components)+".txt";
     }
+    if(CPU_only){
+        preName = "(CPU_only)";
+    }
     if(FPS_record){
-        FileStorage nfs("/Users/yinghanxu/Study/GitHub_Dissertation/Experiments/FPS/"+name, FileStorage::WRITE);
+        FileStorage nfs("/Users/yinghanxu/Study/GitHub_Dissertation/Experiments/FPS"+preName+"/"+name, FileStorage::WRITE);
         nfs << "FPS" << float(1.0f/(totalTime/float(count)));
         nfs.release();
         cout<<endl<<"====Save average FPS to the file "+name+"===="<<endl<<endl;

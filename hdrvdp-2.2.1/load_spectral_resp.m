@@ -15,7 +15,7 @@ lambda = linspace( l_minmax(1), l_minmax(2), (l_minmax(2)-l_minmax(1))/l_step );
 
 R = zeros( length(lambda), size(D,2)-1 );
 for k=2:size(D,2)
-    R(:,k-1) = interp1( D(:,1), D(:,k), lambda, 'cubic', 0 );
+    R(:,k-1) = interp1( D(:,1), D(:,k), lambda, 'PCHIP', 0 );
 end  
 
 end

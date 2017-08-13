@@ -17,7 +17,7 @@
 %  R = double(imread( 'OriginalImage.png' ))/2^8;
 %
 %  % Compute pixels per degree for the viewing conditions
-%  ppd = hdrvdp_pix_per_deg( 21, [size(O,2) size(O,1)], 1 );
+%  ppd = hdrvdp_pix_per_deg( 21, [size(0,2) size(0,1)], 1 );
 %
 %  % Run hdrvdp
 %  res1 = hdrvdp( T, R, 'sRGB-display', ppd )

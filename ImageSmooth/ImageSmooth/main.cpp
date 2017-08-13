@@ -15,8 +15,9 @@ using namespace std;
 using namespace cv;
 
 int main(int argc, const char * argv[]) {
-    // insert code here...
-    Mat img = imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/ResultImages/head(720)_cell20_30/head11.png");
+    int cell_dimension = 30;
+    int num_components = 90;
+    Mat img = imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/ResultImages/head(720)_cell"+to_string(cell_dimension)+"_"+to_string(num_components)+"/head11.png");
     
     Mat smoothedImage = img.clone();
     Mat resultImage = img.clone();
@@ -37,8 +38,7 @@ int main(int argc, const char * argv[]) {
 //            resultImage.col(30*j+5) = smoothedImage.col(30*j+5).clone();
 //        }
 //    }
-    int kernelSize = 3;
-    int cell_dimension = 20;
+    int kernelSize = 5;
     medianBlur (smoothedImage, smoothedImage, kernelSize);
 //    blur(smoothedImage, smoothedImage, Size(kernelSize, kernelSize));
     
@@ -59,13 +59,11 @@ int main(int argc, const char * argv[]) {
         }
     }
     
-    imwrite("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/ResultImages_Smoothed/head11_resultImage_blur_"+to_string(kernelSize)+".png", resultImage);
-    imwrite("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/ResultImages_Smoothed/head11_smoothedImage_blur_"+to_string(kernelSize)+".png", smoothedImage);
-    imwrite("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/ResultImages_Smoothed/head11_originalImage_blur_"+to_string(kernelSize)+".png", img);
+    imwrite("medianBlur_cell_"+to_string(cell_dimension)+"_"+to_string(num_components)+"_"+to_string(kernelSize)+".png", resultImage);
     
-    imshow("OriginalImage", img);
-    imshow("SmoothedImage", smoothedImage);
-    imshow("ResultImage", resultImage);
-    waitKey(0);
+//    imshow("OriginalImage", img);
+//    imshow("SmoothedImage", smoothedImage);
+//    imshow("ResultImage", resultImage);
+//    waitKey(0);
     return 0;
 }

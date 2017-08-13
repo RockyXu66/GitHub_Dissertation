@@ -26,7 +26,7 @@ using namespace cv;
 using namespace std;
 
 // Hard-coded number of values to test, for convenience.
-#define NUM_VALUES 1024
+#define NUM_VALUES 256
 
 // A utility function that checks that our kernel execution performs the
 // requested work over the entire range of data.
@@ -70,24 +70,23 @@ int main (int argc, const char * argv[]) {
 //    ocl_gray.download(gray);
 //    imshow("edges", gray);
 
-    UMat img, gray;
-    img = imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/artifix_120/artifix1.png").
-    getUMat(ACCESS_READ);
-    imshow("original", img);
-    
-    cvtColor(img, gray, COLOR_BGR2GRAY);
-    GaussianBlur(gray, gray,
-                 Size(7, 7), 1.5);
-    Canny(gray, gray, 0, 50);
-    
-    imshow("edges", gray);
-
-    
-    waitKey(0);
+//    UMat img, gray;
+//    img = imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/artifix_120/artifix1.png").
+//    getUMat(ACCESS_READ);
+//    imshow("original", img);
+//    
+//    cvtColor(img, gray, COLOR_BGR2GRAY);
+//    GaussianBlur(gray, gray,
+//                 Size(7, 7), 1.5);
+//    Canny(gray, gray, 0, 50);
+//    
+//    imshow("edges", gray);
+//
+//    
+//    waitKey(0);
     
     int i;
-    char name[128];
-    cout<<"test output here"<<endl;
+//    char name[128];
     // First, try to obtain a dispatch queue that can send work to the
     // GPU in our system.                                             // 2
     dispatch_queue_t queue =
@@ -95,17 +94,17 @@ int main (int argc, const char * argv[]) {
     
     // In the event that our system does NOT have an OpenCL-compatible GPU,
     // we can use the OpenCL CPU compute device instead.
-    if (queue == NULL) {
-        queue = gcl_create_dispatch_queue(CL_DEVICE_TYPE_CPU, NULL);
-        cout<<"does NOT have an OpenCL-compatible GPU"<<endl;
-    }
+//    if (queue == NULL) {
+//        queue = gcl_create_dispatch_queue(CL_DEVICE_TYPE_CPU, NULL);
+//        cout<<"does NOT have an OpenCL-compatible GPU"<<endl;
+//    }
     
     // This is not required, but let's print out the name of the device
     // we are using to do work.  We could use the same function,
     // clGetDeviceInfo, to obtain all manner of information about the device.
-    cl_device_id gpu = gcl_get_device_id_with_dispatch_queue(queue);
-    clGetDeviceInfo(gpu, CL_DEVICE_NAME, 128, name, NULL);
-    cout<<"Created a dispatch queue using the "<<name;
+//    cl_device_id gpu = gcl_get_device_id_with_dispatch_queue(queue);
+//    clGetDeviceInfo(gpu, CL_DEVICE_NAME, 128, name, NULL);
+//    cout<<"Created a dispatch queue using the "<<name;
     
     // Here we hardcode some test data.
     // Normally, when this application is running for real, data would come from
@@ -113,12 +112,16 @@ int main (int argc, const char * argv[]) {
     // of statistics—it just depends on the problem you want to solve.
     float* test_in = (float*)malloc(sizeof(cl_float) * NUM_VALUES);
     for (i = 0; i < NUM_VALUES; i++) {
-        test_in[i] = (cl_float)i;
+        test_in[i] = i;//(cl_float)i;
     }
+    float* input = (float*)malloc(sizeof(cl_float)*1);
+    input[0] = 2.2;
     
     // Once the computation using CL is done, will have to read the results
     // back into our application's memory space.  Allocate some space for that.
     float* test_out = (float*)malloc(sizeof(cl_float) * NUM_VALUES);
+    cout<<endl;
+//    cout<<"size of test_out "<<(sizeof(test_out)/(sizeof(float)))<<endl;
     
     // The test kernel takes two parameters: an input float array and an
     // output float array.  We can't send the application's buffers above, since
@@ -128,6 +131,9 @@ int main (int argc, const char * argv[]) {
     // created above.  This tells OpenCL to copy the data into its memory
     // space before it executes the kernel.                               // 3
     void* mem_in  = gcl_malloc(sizeof(cl_float) * NUM_VALUES, test_in,
+                               CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR);
+//    float input = 2.3f;
+    void* input2  = gcl_malloc(sizeof(cl_float) * 1, input,
                                CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR);
     
     void* mem_out =
@@ -173,7 +179,28 @@ int main (int argc, const char * argv[]) {
         // expected OpenCL types.  Remember, a 'float' in the
         // kernel, is a 'cl_float' from the application's perspective.   // 8
         
-        square_kernel(&range,(cl_float*)mem_in, (cl_float*)mem_out);
+//        cl_float* score = 2.2;
+        
+        
+        for(int i=0; i<3; i++){
+            input[0] = i;
+            void* input2  = gcl_malloc(sizeof(cl_float) * 1, input,
+                                       CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR);
+            square_kernel(&range,(cl_float*)mem_in, (cl_float*)input2, (cl_float*)mem_out);
+        }
+        
+        // Calculate mean in this place
+        float* cl_mean = (float*)malloc(sizeof(cl_float) * NUM_VALUES);
+        for(int i=0; i<NUM_VALUES; i++){
+            cl_mean[i] = i*0.5;
+        }
+        void* mem_mean  = gcl_malloc(sizeof(cl_float) * NUM_VALUES, cl_mean,
+                                   CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR);
+        gcl_get_kernel_block_workgroup_info(addMean_kernel,
+                                            CL_KERNEL_WORK_GROUP_SIZE,
+                                            sizeof(wgs), &wgs, NULL);
+        addMean_kernel(&range,(cl_float*)mem_out, (cl_float*)mem_mean);
+        
         
         // Getting data out of the device's memory space is also easy;
         // use gcl_memcpy.  In this case, gcl_memcpy takes the output
@@ -184,11 +211,36 @@ int main (int argc, const char * argv[]) {
         
     });
     
+//    dispatch_sync(queue, ^{
+//        size_t wgs;
+//        gcl_get_kernel_block_workgroup_info(addMean_kernel,
+//                                            CL_KERNEL_WORK_GROUP_SIZE,
+//                                            sizeof(wgs), &wgs, NULL);
+//        cl_ndrange range = {                                              // 6
+//            1,                     // The number of dimensions to use.
+//            {0, 0, 0},             // The offset in each dimension.  To specify
+//            {NUM_VALUES, 0, 0},    // The global range—this is how many items
+//            {wgs, 0, 0}            // The local size of each workgroup.  This
+//        };
+//        float* cl_mean = (float*)malloc(sizeof(cl_float) * NUM_VALUES);
+//        for(int i=0; i<NUM_VALUES; i++){
+//            cl_mean[i] = i*0.5;
+//        }
+//        addMean_kernel(&range,(cl_float*)mem_out, (cl_float*)mean);
+//        gcl_memcpy(test_out, mem_out, sizeof(cl_float) * NUM_VALUES);
+//    });
+    
     
     // Check to see if the kernel did what it was supposed to:
     if ( validate(test_in, test_out)) {
         cout<<"All values were properly squared."<<endl;;
     }
+    
+    cout<<sizeof(test_out)<<endl;
+    for(int i=0; i<NUM_VALUES; i++){
+        cout<<test_out[i]<<" ";
+    }
+    cout<<endl;
     
     // Don't forget to free up the CL device's memory when you're done. // 10
     gcl_free(mem_in);

@@ -13,9 +13,9 @@ using namespace std;
 using namespace Eigen;
 
 // Number of components to keep for the PCA:
-const int num_components = 90;
-const int smallerNum = 90;      // Total num of components in saved files
-const int cell_dimension = 30;  // Dimension of cells
+const int num_components = 30;
+const int smallerNum = 60;      // Total num of components in saved files
+const int cell_dimension = 20;  // Dimension of cells
 const int imageIndex = 9;
 const int image_num = 899;      //120
 const int image_width = 720;   //960
@@ -318,7 +318,7 @@ void calculatePCA(int cell_num){
     cout<<"Calculate scores and save to files."<<endl;
 }
 
-void reconstruction(int cell_num, Mat bgr[3]){
+void reconstruction(int cell_num, Mat bgr[3], Mat mean_bgr[3]){
     // Load the PCA result
     cout<<"===Load PCA results==="<<endl;
     auto load1 = chrono::high_resolution_clock::now();
@@ -340,6 +340,7 @@ void reconstruction(int cell_num, Mat bgr[3]){
     
     int x = image_height/cell_dimension;
     int y = image_width/cell_dimension;
+    
 //    x = y = 1;
     for(int i=0; i<x; i++){
         for(int j=0; j<y; j++){
@@ -367,12 +368,14 @@ void reconstruction(int cell_num, Mat bgr[3]){
 //            for(int i=0; i<400; i++){
 //                Result.at<float>(0,i) = 0;
 //            }
-//            // Do backproject without using pca function
+            // Do backproject without using pca function
 //            auto rr1 = chrono::high_resolution_clock::now();
 //            for(int i=0; i<20; i++){
 //                Result = Result + scoreB.at<float>(0,i) * pcaB.eigenvectors.row(i);
 //            }
 //            Result = Result + pcaB.mean;
+//            Result = Result.reshape(1,20);
+//            cout<<Result.rows<<" "<<Result.cols<<endl;
 //            auto rr2 = chrono::high_resolution_clock::now();
 //            chrono::duration<double> e_rr = rr2 - rr1;
 //            cout<<"without opencl speedup time: "<<e_rr.count()<<endl;
@@ -385,6 +388,7 @@ void reconstruction(int cell_num, Mat bgr[3]){
 //            cout<<"OpenCL speed up times: "<<e_rr.count()/e_t.count()<<endl;
             Mat g = pcaG.backProject(scoreG).reshape(1,cell_dimension);
             Mat r = pcaR.backProject(scoreR).reshape(1,cell_dimension);
+            
             
             
 //            cout<<norm_0_255(Result.reshape(1,cell_dimension))<<endl;;
@@ -409,9 +413,9 @@ void reconstruction(int cell_num, Mat bgr[3]){
             
         }
     }
-    //    Mat reconstruction_b = norm_0_255(mean_bgr[0]);
-    //    Mat reconstruction_g = norm_0_255(mean_bgr[1]);
-    //    Mat reconstruction_r = norm_0_255(mean_bgr[2]);
+//        Mat reconstruction_b = norm_0_255(mean_bgr[0]);
+//        Mat reconstruction_g = norm_0_255(mean_bgr[1]);
+//        Mat reconstruction_r = norm_0_255(mean_bgr[2]);
 //    auto n1 = chrono::high_resolution_clock::now();
     Mat reconstruction_b = norm_0_255(bgr[0]);
     Mat reconstruction_g = norm_0_255(bgr[1]);
@@ -425,11 +429,11 @@ void reconstruction(int cell_num, Mat bgr[3]){
     auto re2 = chrono::high_resolution_clock::now();
     chrono::duration<double> elapsed_re = re2 - re1;
     cout<<"Reconstruction time: "<<elapsed_re.count() <<" s"<<endl;
-    imwrite("ResultImages/head"+to_string(imageIndex+1+1)+"("+to_string(image_width)+")_cell"+to_string(cell_dimension)+"_"+to_string(num_components)+".png", resultImage);
-    imshow("Reconstruction", resultImage);
-    
-    cout<<"Finish reconstruction. "<<endl;
-    waitKey(0);
+//    imwrite("ResultImages/head"+to_string(imageIndex+1+1)+"("+to_string(image_width)+")_cell"+to_string(cell_dimension)+"_"+to_string(num_components)+".png", resultImage);
+//    imshow("Reconstruction", resultImage);
+//    
+//    cout<<"Finish reconstruction. "<<endl;
+//    waitKey(0);
 }
 
 int main(int argc, const char *argv[]) {
@@ -446,11 +450,13 @@ int main(int argc, const char *argv[]) {
     cout<<c.rows<<" "<<c.cols<<endl;
     cout<<d.rows<<" "<<d.cols<<endl;
     
-    calculatePCA(cell_num);
+//    calculatePCA(cell_num);
     
-//    Mat bgr[3];
-//    split(imread(oneImagePath), bgr);
-//    reconstruction(cell_num, bgr);
+    Mat bgr[3];
+    split(imread(oneImagePath), bgr);
+    Mat mean_bgr[3];
+    split(imread(oneImagePath), mean_bgr);
+    reconstruction(cell_num, bgr, mean_bgr);
     
 //  //   Save smaller PCA and scores
 //    int small = 10;
