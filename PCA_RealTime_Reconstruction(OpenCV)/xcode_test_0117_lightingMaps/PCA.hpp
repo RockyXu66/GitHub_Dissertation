@@ -23,10 +23,10 @@ using namespace cv;
 const bool FPS_record = true;
 const bool CPU_only = true;
 const bool autoExit = true;
-const int autoExitCount = 600;
-const int num_components = 10;//30;
-const int smallerNum = 25;//90;
-const int cell_dimension = 10;//30;
+//const int autoExitCount = 1200;
+const int num_components = 60;//30;
+const int smallerNum = 60;//90;
+const int cell_dimension = 20;//30;
 const int image_num = 899;      //120
 const int image_width = 720;//720;   //960
 const int image_height = image_width;  //960
@@ -62,7 +62,11 @@ public:
     
     void load();
     
+    void windowLoopLoad(int loop_num_components);
+    
     unsigned char* reconstruct(int imageIndex, unsigned char* image, Mat bgr[3],int cell_num, int x, int y, bool isBlur);
+    
+    unsigned char* windowLoopReconstruct(int imageIndex, unsigned char* image, Mat bgr[3],int cell_num, int x, int y, bool isBlur, int loop_num_components);
     
     unsigned char* CalculateEigen(vector<unsigned char*> images, int width, int height);
     

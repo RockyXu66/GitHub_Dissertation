@@ -60,6 +60,99 @@ GLuint planeVAO;
 GLuint imageIndex = 10;
 bool isSmoothed = false;
 
+GLFWwindow* window;
+
+void windowsLoop(Mat bgr[3], int cell_num, int image_width, int image_height, int x, int y, int loop_num_components){
+    Shader lightingShader("shaders/basic.vs", "shaders/basic.frag");
+    unsigned char* newImage = SOIL_load_image(oneImagePath.c_str(), &image_width, &image_height, 0, SOIL_LOAD_RGB);
+    // PCA
+    PCA_ pca;
+    pca.load();
+    cout<<"finish load pca"<<endl;
+    GLfloat totalTime = 0;
+    int count = 0;
+    int c = 0;
+    // Game loop
+    while(!glfwWindowShouldClose(window)){
+        // Set frame time
+        GLfloat currentFrame = glfwGetTime();
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
+        
+        c++;
+        if(c>10){
+            count++;
+            totalTime += deltaTime;
+        }
+    
+//                cout<<deltaTime<<endl;
+        //        cout<<"DeltaTime: "<<deltaTime<<" FPS: "<<1.0f/deltaTime<<endl;
+        //        cout<<imageIndex<<endl;
+        
+        // Check and call events
+        glfwPollEvents();
+        Do_Movement();
+        
+        // Clear the colorbuffer
+        glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        
+        newImage = pca.windowLoopReconstruct(imageIndex, newImage, bgr, cell_num, x, y, isSmoothed, loop_num_components);
+        testTexture = loadNewTexture(newImage, image_width, image_height);
+        
+        //        cout<<imageIndex<<endl;
+        
+        // Transformation matrices
+        mat4 projection = perspective(camera.Zoom, (float)screenWidth/(float)screenHeight, 0.1f, 100.0f);
+        mat4 view = camera.GetViewMatrix();
+        mat4 model;
+        model = rotate(model, radians(180.0f), vec3(0.0f, 1.0f, 0.0));
+        
+        //Draw objects
+        lightingShader.Use();
+        glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, value_ptr(model));
+        glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "view"), 1, GL_FALSE, value_ptr(view));
+        glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "projection"),1,GL_FALSE,value_ptr(projection));
+        glBindVertexArray(planeVAO);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, floorTexture);
+        glUniform1i(glGetUniformLocation(lightingShader.Program, "floorTexture"), 0);
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, testTexture);
+        glUniform1i(glGetUniformLocation(lightingShader.Program, "testTexture"), 1);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        glBindVertexArray(0);
+        
+        // Swap the buffers
+        glfwSwapBuffers(window);
+        
+        if(autoExit){
+            if(totalTime > 90.0){
+                break;
+            }
+        }
+    }
+    cout<<"=========="+to_string(loop_num_components)+"==========="<<endl;
+    cout<<"DeltaTime: "<<totalTime/float(count)<<" FPS: "<<1.0f/(totalTime/float(count))<<endl;
+    cout<<"Total time: "<<totalTime<<" Total counts: "<<count<<endl;
+    string name = "";
+    string preName = "";
+    if(isSmoothed){
+        name = "head"+to_string(image_width)+"_cells"+to_string(cell_dimension)+"_"+to_string(loop_num_components)+"_Smoothed.txt";
+    }else{
+        name = "head"+to_string(image_width)+"_cells"+to_string(cell_dimension)+"_"+to_string(loop_num_components)+".txt";
+    }
+    if(CPU_only){
+        preName = "(CPU_only)";
+    }
+    if(FPS_record){
+        FileStorage nfs("/Users/yinghanxu/Study/GitHub_Dissertation/Experiments/FPS"+preName+"/"+name, FileStorage::WRITE);
+        nfs << "FPS" << float(1.0f/(totalTime/float(count)));
+        nfs.release();
+        cout<<endl<<"====Save average FPS to the file "+name+"===="<<endl<<endl;
+    }
+}
+
 // The MAIN function, from here we start our application and run our Game loop
 int main(int argc, const char *argv[])
 {
@@ -72,7 +165,8 @@ int main(int argc, const char *argv[])
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     
-    GLFWwindow* window = glfwCreateWindow(screenWidth, screenHeight, "PCA", nullptr, nullptr); // Windowed
+    //GLFWwindow* window = glfwCreateWindow(screenWidth, screenHeight, "PCA", nullptr, nullptr); // Windowed
+    window = glfwCreateWindow(screenWidth, screenHeight, "PCA", nullptr, nullptr);
     glfwMakeContextCurrent(window);
     
     // Set the required callback functions
@@ -134,12 +228,7 @@ int main(int argc, const char *argv[])
     floorTexture = loadTexture(path);
     testTexture = loadTexture(path);
     
-    // PCA
-    PCA_ pca;
-    GLfloat testTime1 = glfwGetTime();
-    pca.load();
-    GLfloat testTime2 = glfwGetTime();
-    GLfloat duration = testTime2 - testTime1;
+    
     int image_width, image_height;
     unsigned char* newImage = SOIL_load_image(oneImagePath.c_str(), &image_width, &image_height, 0, SOIL_LOAD_RGB);
     
@@ -150,17 +239,24 @@ int main(int argc, const char *argv[])
     int x = image_height/cell_dimension;
     int y = image_width/cell_dimension;
     
+    
+    /*
+    // PCA
+    PCA_ pca;
+    pca.load();
+    
     GLfloat totalTime = 0;
     int count = 0;
+    int c = 0;
     // Game loop
-    while(!glfwWindowShouldClose(window))
-    {
+    while(!glfwWindowShouldClose(window)){
         // Set frame time
         GLfloat currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
         
-        if(deltaTime<0.5){
+        c++;
+        if(c>10){
             count++;
             totalTime += deltaTime;
         }
@@ -207,7 +303,7 @@ int main(int argc, const char *argv[])
         glfwSwapBuffers(window);
         
         if(autoExit){
-            if(count == autoExitCount){
+            if(totalTime > 90.0){
                 break;
             }
         }
@@ -231,12 +327,16 @@ int main(int argc, const char *argv[])
         nfs.release();
         cout<<endl<<"====Save average FPS to the file "+name+"===="<<endl<<endl;
     }
+    */
     
-//    float test;
-//    FileStorage fs("/Users/yinghanxu/Study/Dissertation_ResultData/SSIM&FPS/"+name,FileStorage::READ);
-//    fs["FPS"] >> test;
-//    fs.release();
-//    cout<<test<<endl;
+    
+    windowsLoop(bgr, cell_num, image_width, image_height, x, y, 60);
+    windowsLoop(bgr, cell_num, image_width, image_height, x, y, 55);
+    windowsLoop(bgr, cell_num, image_width, image_height, x, y, 50);
+    windowsLoop(bgr, cell_num, image_width, image_height, x, y, 45);
+    windowsLoop(bgr, cell_num, image_width, image_height, x, y, 40);
+    windowsLoop(bgr, cell_num, image_width, image_height, x, y, 35);
+    windowsLoop(bgr, cell_num, image_width, image_height, x, y, 30);
     
     glfwTerminate();
     return 0;
