@@ -20,13 +20,13 @@ using namespace std;
 using namespace cv;
 
 // Number of components to keep for the PCA:
-const bool FPS_record = true;
+const bool FPS_record = false;
 const bool CPU_only = true;
 const bool autoExit = true;
 //const int autoExitCount = 1200;
-const int num_components = 60;//30;
-const int smallerNum = 60;//90;
-const int cell_dimension = 20;//30;
+const int num_components = 90;//30;
+const int smallerNum = 90;//90;
+const int cell_dimension = 30;//30;
 const int image_num = 899;      //120
 const int image_width = 720;//720;   //960
 const int image_height = image_width;  //960
@@ -50,6 +50,10 @@ public:
     int cellImage_num; //Number of cells
     int dim;        // Dimension of one image
     int pca_dim;    // PCA dimension of the image
+    
+    double cccTime = 0;
+    int ccc = 0;
+    
     string fileName;
     MatrixXd EigenVectors_Red, EigenVectors_Green, EigenVectors_Blue;
     MatrixXd oneImage_scores_Red, oneImage_scores_Green, oneImage_scores_Blue;

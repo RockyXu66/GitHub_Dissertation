@@ -240,7 +240,6 @@ int main(int argc, const char *argv[])
     int y = image_width/cell_dimension;
     
     
-    /*
     // PCA
     PCA_ pca;
     pca.load();
@@ -311,10 +310,12 @@ int main(int argc, const char *argv[])
     cout<<"====================="<<endl;
     cout<<"DeltaTime: "<<totalTime/float(count)<<" FPS: "<<1.0f/(totalTime/float(count))<<endl;
     cout<<"Total time: "<<totalTime<<" Total counts: "<<count<<endl;
+//    cout<<"Average: "<<pca.cccTime/float(pca.ccc)<<endl;
     string name = "";
     string preName = "";
     if(isSmoothed){
         name = "head"+to_string(image_width)+"_cells"+to_string(cell_dimension)+"_"+to_string(num_components)+"_Smoothed.txt";
+        cout<<"<Smoothed Open>"<<endl;
     }else{
         name = "head"+to_string(image_width)+"_cells"+to_string(cell_dimension)+"_"+to_string(num_components)+".txt";
     }
@@ -327,16 +328,16 @@ int main(int argc, const char *argv[])
         nfs.release();
         cout<<endl<<"====Save average FPS to the file "+name+"===="<<endl<<endl;
     }
-    */
     
     
-    windowsLoop(bgr, cell_num, image_width, image_height, x, y, 60);
-    windowsLoop(bgr, cell_num, image_width, image_height, x, y, 55);
-    windowsLoop(bgr, cell_num, image_width, image_height, x, y, 50);
-    windowsLoop(bgr, cell_num, image_width, image_height, x, y, 45);
-    windowsLoop(bgr, cell_num, image_width, image_height, x, y, 40);
-    windowsLoop(bgr, cell_num, image_width, image_height, x, y, 35);
-    windowsLoop(bgr, cell_num, image_width, image_height, x, y, 30);
+    
+//    windowsLoop(bgr, cell_num, image_width, image_height, x, y, 60);
+//    windowsLoop(bgr, cell_num, image_width, image_height, x, y, 55);
+//    windowsLoop(bgr, cell_num, image_width, image_height, x, y, 50);
+//    windowsLoop(bgr, cell_num, image_width, image_height, x, y, 45);
+//    windowsLoop(bgr, cell_num, image_width, image_height, x, y, 40);
+//    windowsLoop(bgr, cell_num, image_width, image_height, x, y, 35);
+//    windowsLoop(bgr, cell_num, image_width, image_height, x, y, 30);
     
     glfwTerminate();
     return 0;

@@ -200,6 +200,7 @@ void PCA_::windowLoopLoad(int loop_num_components){
 
 vector<Mat> bs, gs,rs;
 
+
 unsigned char* PCA_::reconstruct(int imageIndex, unsigned char* newImage, Mat bgr[3], int cell_num, int x, int y, bool isBlur){
     
     if(CPU_only){
@@ -240,7 +241,7 @@ unsigned char* PCA_::reconstruct(int imageIndex, unsigned char* newImage, Mat bg
                 Mat b = bs[index];
                 Mat g = gs[index];
                 Mat r = rs[index];
-                
+//                auto re1 = chrono::high_resolution_clock::now();
                 for(int k=0; k<num_components; k++){
                     bs[index] = bs[index] + scoreB.at<float>(0,k) * pcas_b[index].eigenvectors.row(k);
                     gs[index] = gs[index] + scoreG.at<float>(0,k) * pcas_g[index].eigenvectors.row(k);
@@ -249,6 +250,10 @@ unsigned char* PCA_::reconstruct(int imageIndex, unsigned char* newImage, Mat bg
                 bs[index] = bs[index] + pcas_b[index].mean;
                 gs[index] = gs[index] + pcas_g[index].mean;
                 rs[index] = rs[index] + pcas_r[index].mean;
+//                auto re2 = chrono::high_resolution_clock::now();
+//                chrono::duration<double> elapsed_re = re2 - re1;
+//                this->cccTime += elapsed_re.count();
+//                this->ccc++;
                 bs[index] = bs[index].reshape(1,cell_dimension);
                 gs[index] = gs[index].reshape(1,cell_dimension);
                 rs[index] = rs[index].reshape(1,cell_dimension);
@@ -256,14 +261,19 @@ unsigned char* PCA_::reconstruct(int imageIndex, unsigned char* newImage, Mat bg
                 gs[index].copyTo(bgr[1](Rect(i*cell_dimension,j*cell_dimension,cell_dimension,cell_dimension)));
                 rs[index].copyTo(bgr[2](Rect(i*cell_dimension,j*cell_dimension,cell_dimension,cell_dimension)));
             }else{
+//                auto re1 = chrono::high_resolution_clock::now();
                 Mat b = pcas_b[index].backProject(scoreB).reshape(1,cell_dimension);
                 Mat g = pcas_g[index].backProject(scoreG).reshape(1,cell_dimension);
                 Mat r = pcas_r[index].backProject(scoreR).reshape(1,cell_dimension);
-                
+//                auto re2 = chrono::high_resolution_clock::now();
+//                chrono::duration<double> elapsed_re = re2 - re1;
+//                this->cccTime += elapsed_re.count();
+//                this->ccc++;
                 b.copyTo(bgr[0](Rect(i*cell_dimension,j*cell_dimension,cell_dimension,cell_dimension)));
                 g.copyTo(bgr[1](Rect(i*cell_dimension,j*cell_dimension,cell_dimension,cell_dimension)));
                 r.copyTo(bgr[2](Rect(i*cell_dimension,j*cell_dimension,cell_dimension,cell_dimension)));
             }
+            
             
 //            Mat b = pcas_b[index].backProject(scoreB).reshape(1,cell_dimension);
 //            Mat g = pcas_g[index].backProject(scoreG).reshape(1,cell_dimension);
