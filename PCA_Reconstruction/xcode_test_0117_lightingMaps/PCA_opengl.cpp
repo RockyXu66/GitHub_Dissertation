@@ -50,9 +50,12 @@ bool firstMouse = true;
 GLfloat deltaTime = 0.0f;
 GLfloat lastFrame = 0.0f;
 
-//Global variables
+// Global variables
 GLuint floorTexture, testTexture;
 GLuint planeVAO;
+
+// 
+GLubyte *pixels = NULL;
 
 // The MAIN function, from here we start our application and run our Game loop
 int main()
