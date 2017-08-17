@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B10FFD371F44CE4300CE91B5 /* libpngwriter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B10FFD361F44CE4300CE91B5 /* libpngwriter.a */; };
+		B10FFD391F44F2A200CE91B5 /* libpngwriter.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B10FFD381F44F2A200CE91B5 /* libpngwriter.dylib */; };
 		B13E8B8E1E2EB0ED008D7A05 /* libassimp.3.3.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B13E8B8D1E2EB0ED008D7A05 /* libassimp.3.3.1.dylib */; };
 		B13E8B901E2EB13C008D7A05 /* libSOIL.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B13E8B8F1E2EB13C008D7A05 /* libSOIL.dylib */; };
 		B13E8BB01E2ED328008D7A05 /* PCA_opengl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B13E8BAF1E2ED328008D7A05 /* PCA_opengl.cpp */; };
@@ -29,6 +31,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B10FFD301F44CAFF00CE91B5 /* libpng16.16.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpng16.16.dylib; path = ../../../../../usr/local/Cellar/libpng/1.6.29/lib/libpng16.16.dylib; sourceTree = "<group>"; };
+		B10FFD321F44CDAF00CE91B5 /* libpngwriter.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpngwriter.dylib; path = ../../Tools/build/lib/libpngwriter.dylib; sourceTree = "<group>"; };
+		B10FFD341F44CDDD00CE91B5 /* libpngwriter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpngwriter.a; path = ../../Tools/build/lib/libpngwriter.a; sourceTree = "<group>"; };
+		B10FFD361F44CE4300CE91B5 /* libpngwriter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpngwriter.a; path = ../../Tools/build/libpngwriter.a; sourceTree = "<group>"; };
+		B10FFD381F44F2A200CE91B5 /* libpngwriter.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpngwriter.dylib; path = ../../Tools/build/libpngwriter.dylib; sourceTree = "<group>"; };
 		B13E8B8B1E2EB0DC008D7A05 /* 3.3.1 */ = {isa = PBXFileReference; lastKnownFileType = folder; name = 3.3.1; path = ../../../../../../usr/local/Cellar/assimp/3.3.1; sourceTree = "<group>"; };
 		B13E8B8D1E2EB0ED008D7A05 /* libassimp.3.3.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libassimp.3.3.1.dylib; path = ../../../../../../usr/local/Cellar/assimp/3.3.1/lib/libassimp.3.3.1.dylib; sourceTree = "<group>"; };
 		B13E8B8F1E2EB13C008D7A05 /* libSOIL.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libSOIL.dylib; path = ../../../../../../opt/local/lib/libSOIL.dylib; sourceTree = "<group>"; };
@@ -49,6 +56,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B10FFD391F44F2A200CE91B5 /* libpngwriter.dylib in Frameworks */,
+				B10FFD371F44CE4300CE91B5 /* libpngwriter.a in Frameworks */,
 				B13E8B901E2EB13C008D7A05 /* libSOIL.dylib in Frameworks */,
 				B13E8B8E1E2EB0ED008D7A05 /* libassimp.3.3.1.dylib in Frameworks */,
 				B17CC22B1E2E9E76004239F2 /* libglfw3.3.2.dylib in Frameworks */,
@@ -94,6 +103,11 @@
 		B17CC2251E2E9E3F004239F2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B10FFD381F44F2A200CE91B5 /* libpngwriter.dylib */,
+				B10FFD361F44CE4300CE91B5 /* libpngwriter.a */,
+				B10FFD341F44CDDD00CE91B5 /* libpngwriter.a */,
+				B10FFD321F44CDAF00CE91B5 /* libpngwriter.dylib */,
+				B10FFD301F44CAFF00CE91B5 /* libpng16.16.dylib */,
 				B13E8B8F1E2EB13C008D7A05 /* libSOIL.dylib */,
 				B13E8B8D1E2EB0ED008D7A05 /* libassimp.3.3.1.dylib */,
 				B13E8B8B1E2EB0DC008D7A05 /* 3.3.1 */,
@@ -270,6 +284,8 @@
 					/urs/local/lib,
 					/usr/local/Cellar/assimp/3.3.1/lib,
 					/opt/local/lib,
+					/usr/local/Cellar/libpng/1.6.29/lib,
+					/Users/yinghanxu/Study/Tools/build/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -289,6 +305,8 @@
 					/urs/local/lib,
 					/usr/local/Cellar/assimp/3.3.1/lib,
 					/opt/local/lib,
+					/usr/local/Cellar/libpng/1.6.29/lib,
+					/Users/yinghanxu/Study/Tools/build/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

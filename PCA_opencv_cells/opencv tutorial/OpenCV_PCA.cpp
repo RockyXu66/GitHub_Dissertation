@@ -14,14 +14,14 @@ using namespace std;
 using namespace Eigen;
 
 // Number of components to keep for the PCA:
-const bool isSmoothed = true;
+const bool isSmoothed = false;
 const int kernelSize = 3;
 //const int num_components = 60;
 const int smallerNum = 10;
 const int cell_dimension = 5;
 //const int imageIndex = 10;
 const int image_num = 899;      //120
-const int image_width = 720;   //960
+const int image_width = 540;   //960
 const int image_height = image_width;  //960
 
 //String oneImagePath = "/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/artifix_120/artifix1.png";
@@ -29,12 +29,12 @@ String oneImagePath = "/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/h
 
 String m_name = to_string(smallerNum)+"_cells"+to_string(cell_dimension);
 String d_name = "head";
-String file_PCA_b = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/PCA"+m_name+"_b("+d_name+to_string(image_width)+").txt";
-String file_PCA_g = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/PCA"+m_name+"_g("+d_name+to_string(image_width)+").txt";
-String file_PCA_r = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/PCA"+m_name+"_r("+d_name+to_string(image_width)+").txt";
-String file_Scores_b = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/Scores"+m_name+"_b("+d_name+to_string(image_width)+").txt";
-String file_Scores_g = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/Scores"+m_name+"_g("+d_name+to_string(image_width)+").txt";
-String file_Scores_r = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/Scores"+m_name+"_r("+d_name+to_string(image_width)+").txt";
+String file_PCA_b = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells"+to_string(image_width)+"/PCA"+m_name+"_b("+d_name+to_string(image_width)+").txt";
+String file_PCA_g = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells"+to_string(image_width)+"/PCA"+m_name+"_g("+d_name+to_string(image_width)+").txt";
+String file_PCA_r = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells"+to_string(image_width)+"/PCA"+m_name+"_r("+d_name+to_string(image_width)+").txt";
+String file_Scores_b = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells"+to_string(image_width)+"/Scores"+m_name+"_b("+d_name+to_string(image_width)+").txt";
+String file_Scores_g = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells"+to_string(image_width)+"/Scores"+m_name+"_g("+d_name+to_string(image_width)+").txt";
+String file_Scores_r = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells"+to_string(image_width)+"/Scores"+m_name+"_r("+d_name+to_string(image_width)+").txt";
 
 //String file_Scores_b1 = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/Scores"+m_name+"_b1(head).txt";
 //String file_Scores_b2 = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/Scores"+m_name+"_b2(head).txt";

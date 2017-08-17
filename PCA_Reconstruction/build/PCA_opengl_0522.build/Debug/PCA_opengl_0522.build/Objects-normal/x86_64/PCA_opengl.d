@@ -366,4 +366,18 @@ dependencies: \
   /usr/local/include/Eigen/src/IterativeLinearSolvers/LeastSquareConjugateGradient.h \
   /usr/local/include/Eigen/src/IterativeLinearSolvers/BiCGSTAB.h \
   /usr/local/include/Eigen/src/IterativeLinearSolvers/IncompleteLUT.h \
-  /usr/local/include/Eigen/src/IterativeLinearSolvers/IncompleteCholesky.h
+  /usr/local/include/Eigen/src/IterativeLinearSolvers/IncompleteCholesky.h \
+  /Users/yinghanxu/Study/GitHub_Dissertation/PCA_Reconstruction/xcode_test_0117_lightingMaps/pngwriter.h \
+  /usr/local/include/png.h /usr/local/include/pnglibconf.h \
+  /usr/local/include/pngconf.h /usr/local/include/ft2build.h \
+  /usr/local/include/freetype/config/ftheader.h \
+  /usr/local/include/freetype/freetype.h \
+  /usr/local/include/freetype/config/ftconfig.h \
+  /usr/local/include/freetype/config/ftoption.h \
+  /usr/local/include/freetype/config/ftstdlib.h \
+  /usr/local/include/freetype/fttypes.h \
+  /usr/local/include/freetype/ftsystem.h \
+  /usr/local/include/freetype/ftimage.h \
+  /usr/local/include/freetype/fterrors.h \
+  /usr/local/include/freetype/ftmoderr.h \
+  /usr/local/include/freetype/fterrdef.h

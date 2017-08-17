@@ -26,12 +26,15 @@
 #include <SOIL.h>
 #include <iostream>
 
+#include "pngwriter.h"
+
 using namespace std;
 using namespace glm;
 using namespace Eigen;
 
 // Properties
 GLuint screenWidth = 800, screenHeight = 600;
+int nPixels = 3*screenWidth*screenHeight;
 
 // Function prototypes
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
@@ -54,8 +57,44 @@ GLfloat lastFrame = 0.0f;
 GLuint floorTexture, testTexture;
 GLuint planeVAO;
 
-// 
-GLubyte *pixels = NULL;
+//bool save_screenshot(string filename, int w, int h)
+//{
+//    //This prevents the images getting padded
+//    // when the width multiplied by 3 is not a multiple of 4
+//    glPixelStorei(GL_PACK_ALIGNMENT, 1);
+//    
+//    int nSize = w*h*3;
+//    // First let's create our buffer, 3 channels per Pixel
+//    char* dataBuffer = (char*)malloc(nSize*sizeof(char));
+//    
+//    if (!dataBuffer) return false;
+//    
+//    // Let's fetch them from the backbuffer
+//    // We request the pixels in GL_BGR format, thanks to Berzeger for the tip
+//    glReadPixels((GLint)0, (GLint)0,
+//                 (GLint)w, (GLint)h,
+//                 GL_BGR, GL_UNSIGNED_BYTE, dataBuffer);
+//    
+//    //Now the file creation
+//    FILE *filePtr = fopen(filename.c_str(), "wb");
+//    if (!filePtr) return false;
+//    
+//    
+//    unsigned char TGAheader[12]={0,0,2,0,0,0,0,0,0,0,0,0};
+//    unsigned char header[6] = { w%256,w/256,
+//        h%256,h/256,
+//        24,0};
+//    // We write the headers
+//    fwrite(TGAheader,	sizeof(unsigned char),	12,	filePtr);
+//    fwrite(header,	sizeof(unsigned char),	6,	filePtr);
+//    // And finally our image data
+//    fwrite(dataBuffer,	sizeof(GLubyte),	nSize,	filePtr);
+//    fclose(filePtr);
+//    
+//    free(dataBuffer);
+//    
+//    return true;
+//}
 
 // The MAIN function, from here we start our application and run our Game loop
 int main()
@@ -221,9 +260,41 @@ int main()
 //    }
 */
     
+    int count_record = 0;
+    
     // Game loop
     while(!glfwWindowShouldClose(window))
     {
+//        save_screenshot(record.png, screenWidth, screenHeight);
+        GLfloat* pixels = new GLfloat[nPixels*4];
+        glReadPixels(0.0, 0.0, screenWidth*2, screenHeight*2,GL_RGB, GL_FLOAT, pixels);
+        pngwriter PNG(screenWidth*2, screenHeight*2, 1.0, "record.png");
+        size_t x = 1;
+        size_t y = 1;
+        double R, G, B;
+        for(size_t i=0; i<nPixels*4; i++) // "i" is the index for array "pixels"
+        {
+            switch(i%3)
+            {
+                case 2:
+                    B = static_cast<double>(pixels[i]); break;
+                case 1:
+                    G = static_cast<double>(pixels[i]); break;
+                case 0:
+                    R = static_cast<double>(pixels[i]);
+                    PNG.plot(x, y, R, G, B);     // set pixel to position (x, y)
+                    if( x == screenWidth*2 )             // Move to the next row of image
+                    {
+                        x=1;
+                        y++;
+                    }
+                    else                       // To the next pixel
+                    { x++; }
+                    break;
+            }
+        }
+        PNG.close();
+        
         // Set frame time
         GLfloat currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;

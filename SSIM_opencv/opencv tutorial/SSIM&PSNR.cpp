@@ -178,14 +178,46 @@ int main(){
 //    compute_quality_metrics("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/artifix_120/artifix11.png", "/Users/yinghanxu/Study/GitHub_Dissertation/PCA_opencv_cells/opencv tutorial/ResultImages/artifix11_cell15_20.png", 20);
 
     
-    // Crop and save a specific area of an image
-    int cell_dimension = 20;
-    int num_components = 40;
-    Mat img = imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/ResultImages/head(720)_cell"+to_string(cell_dimension)+"_"+to_string(num_components)+"/head11.png");
-    Mat area = img(Rect(360, 360, 300, 300));
-    imwrite(to_string(cell_dimension)+"_"+to_string(num_components)+".png", area);
+//    // Crop and save a specific area of an image
+//    int cell_dimension = 20;
+//    int num_components = 40;
+//    Mat img = imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/ResultImages/head(720)_cell"+to_string(cell_dimension)+"_"+to_string(num_components)+"/head11.png");
+//    Mat area = img(Rect(360, 360, 300, 300));
+//    imwrite(to_string(cell_dimension)+"_"+to_string(num_components)+".png", area);
+//    
+//    return 0;
     
+//    VideoCapture cap("/Users/yinghanxu/Desktop/soliderRecord.mov"); // open the default camera
+//    if(!cap.isOpened())  // check if we succeeded
+//        return -1;
+//    
+//    Mat edges;
+//    namedWindow("edges",1);
+//    int i=0;
+//    for(;;)
+//    {
+//        i++;
+//        Mat frame;
+//        cap >> frame; // get a new frame from camera
+////        cvtColor(frame, edges, COLOR_BGR2GRAY);
+////        GaussianBlur(edges, edges, Size(7,7), 1.5, 1.5);
+////        Canny(edges, edges, 0, 30, 3);
+//        resize(frame,frame,Size(720,720));
+//        imwrite("soliderRecord/solider_"+to_string(i)+".png", frame);
+//        imshow("edges", frame);
+//        if(waitKey(30) >= 0) break;
+//    }
+//    // the camera will be deinitialized automatically in VideoCapture destructor
+//    return 0;
+    
+    for(int i=0; i<44; i++){
+        Mat solider = imread("soliderRecord/solider_"+to_string(436+i)+".png");
+        imwrite("soliderRecord/solider_"+to_string(1+i)+".png", solider);
+    }
     return 0;
+    
+    
+    
 }
 
 
