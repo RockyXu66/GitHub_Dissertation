@@ -62,7 +62,7 @@ function res = hdrvdp( test, reference, color_encoding, pixels_per_degree, optio
 % 'sRGB-display' - use this color encoding for standard (LDR) color images.
 % This encoding assumes an sRGB display, with 100 cd/m^2 peak luminance and
 % 1 cd/m^2 black level. Note that this is different from sRGB->XYZ
-% transform, which assumes the peak luminance of 80 cd/m^2 and 1 cd/m^2
+% transform, which assumes the peak lucminance of 80 cd/m^2 and 1 cd/m^2
 % black level. The maximum pixel value must be 1 (not 256).
 %
 % 'rgb-bt.709' - use this color space for HDR images AFTER they are at

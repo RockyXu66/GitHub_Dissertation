@@ -20,15 +20,15 @@ using namespace std;
 using namespace cv;
 
 // Number of components to keep for the PCA:
-const bool FPS_record = false;
-const bool CPU_only = true;
+const bool FPS_record = true;
+const bool CPU_only = false;
 const bool autoExit = true;
 //const int autoExitCount = 1200;
-const int num_components = 90;//30;
-const int smallerNum = 90;//90;
+const int num_components = 100;//30;
+const int smallerNum = 100;//90;
 const int cell_dimension = 30;//30;
 const int image_num = 899;      //120
-const int image_width = 720;//720;   //960
+const int image_width = 540;//720;   //960
 const int image_height = image_width;  //960
 
 //const String oneImagePath = "/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/artifix_120/artifix1.png";
@@ -36,12 +36,12 @@ const String oneImagePath = "/Users/yinghanxu/Study/Dissertation_ResultData/Data
 const String d_name = "head";
 
 const String m_name = to_string(smallerNum)+"_cells"+to_string(cell_dimension);
-const String file_PCA_b = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/PCA"+m_name+"_b("+d_name+to_string(image_width)+").txt";
-const String file_PCA_g = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/PCA"+m_name+"_g("+d_name+to_string(image_width)+").txt";
-const String file_PCA_r = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/PCA"+m_name+"_r("+d_name+to_string(image_width)+").txt";
-const String file_Scores_b = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/Scores"+m_name+"_b("+d_name+to_string(image_width)+").txt";
-const String file_Scores_g = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/Scores"+m_name+"_g("+d_name+to_string(image_width)+").txt";
-const String file_Scores_r = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/Scores"+m_name+"_r("+d_name+to_string(image_width)+").txt";
+const String file_PCA_b = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells"+to_string(image_width)+"/PCA"+m_name+"_b("+d_name+to_string(image_width)+").txt";
+const String file_PCA_g = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells"+to_string(image_width)+"/PCA"+m_name+"_g("+d_name+to_string(image_width)+").txt";
+const String file_PCA_r = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells"+to_string(image_width)+"/PCA"+m_name+"_r("+d_name+to_string(image_width)+").txt";
+const String file_Scores_b = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells"+to_string(image_width)+"/Scores"+m_name+"_b("+d_name+to_string(image_width)+").txt";
+const String file_Scores_g = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells"+to_string(image_width)+"/Scores"+m_name+"_g("+d_name+to_string(image_width)+").txt";
+const String file_Scores_r = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells"+to_string(image_width)+"/Scores"+m_name+"_r("+d_name+to_string(image_width)+").txt";
 
 class PCA_{
     

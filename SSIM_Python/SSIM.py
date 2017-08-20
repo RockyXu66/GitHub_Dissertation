@@ -114,14 +114,14 @@ def cal_SSIM_For_UnSmoothed(cell_dimension, num_components, kernelSize):
 # test = ssim(original, contrast, multichannel=True)
 # print test
 
-image_width = 720
+image_width = 540
 cell_dimension = 30
-num_components = 60
-isSmoothed = True
-kernelSize = 1
+num_components = 10
+isSmoothed = False
+kernelSize = 3
 
 # num_components = 60
-cal_SSIM_For_UnSmoothed(cell_dimension, num_components, 1)
+# cal_SSIM_For_UnSmoothed(cell_dimension, num_components, 1)
 
 
 
@@ -133,11 +133,12 @@ cal_SSIM_For_UnSmoothed(cell_dimension, num_components, 1)
 # s = ssim(original, contrast, multichannel=True)
 # print s
 
-# cal_SSIM(8, isSmoothed, cell_dimension, image_width)
-# cal_SSIM(7, isSmoothed, cell_dimension, image_width)
-# cal_SSIM(6, isSmoothed, cell_dimension, image_width)
-# cal_SSIM(5, isSmoothed, cell_dimension, image_width)
-# cal_SSIM(4, isSmoothed, cell_dimension, image_width)
+cal_SSIM(100, isSmoothed, cell_dimension, image_width)
+# cal_SSIM(50, isSmoothed, cell_dimension, image_width)
+# cal_SSIM(60, isSmoothed, cell_dimension, image_width)
+# cal_SSIM(70, isSmoothed, cell_dimension, image_width)
+# cal_SSIM(80, isSmoothed, cell_dimension, image_width)
+# cal_SSIM(90, isSmoothed, cell_dimension, image_width)
 
 # total = 0
 # for imageIndex in range(2,901):

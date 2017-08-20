@@ -13,12 +13,12 @@ using namespace std;
 using namespace Eigen;
 
 // Number of components to keep for the PCA:
-const int num_components = 30;
-const int smallerNum = 60;      // Total num of components in saved files
-const int cell_dimension = 20;  // Dimension of cells
+const int num_components = 100;
+const int smallerNum = 100;      // Total num of components in saved files
+const int cell_dimension = 30;  // Dimension of cells
 const int imageIndex = 9;
 const int image_num = 899;      //120
-const int image_width = 720;   //960
+const int image_width = 540;   //960
 const int image_height = image_width;  //960
 
 //String oneImagePath = "/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/artifix_120/artifix1.png";
@@ -26,19 +26,12 @@ String oneImagePath = "/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/h
 
 String m_name = to_string(smallerNum)+"_cells"+to_string(cell_dimension);
 String d_name = "head";
-String file_PCA_b = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/PCA"+m_name+"_b("+d_name+to_string(image_width)+").txt";
-String file_PCA_g = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/PCA"+m_name+"_g("+d_name+to_string(image_width)+").txt";
-String file_PCA_r = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/PCA"+m_name+"_r("+d_name+to_string(image_width)+").txt";
-String file_Scores_b = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/Scores"+m_name+"_b("+d_name+to_string(image_width)+").txt";
-String file_Scores_g = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/Scores"+m_name+"_g("+d_name+to_string(image_width)+").txt";
-String file_Scores_r = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/Scores"+m_name+"_r("+d_name+to_string(image_width)+").txt";
-
-//String file_Scores_b1 = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/Scores"+m_name+"_b1(head).txt";
-//String file_Scores_b2 = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/Scores"+m_name+"_b2(head).txt";
-//String file_Scores_g1 = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/Scores"+m_name+"_g1(head).txt";
-//String file_Scores_g2 = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/Scores"+m_name+"_g2(head).txt";
-//String file_Scores_r1 = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/Scores"+m_name+"_r1(head).txt";
-//String file_Scores_r2 = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/Scores"+m_name+"_r2(head).txt";
+String file_PCA_b = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells"+to_string(image_width)+"/PCA"+m_name+"_b("+d_name+to_string(image_width)+").txt";
+String file_PCA_g = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells"+to_string(image_width)+"/PCA"+m_name+"_g("+d_name+to_string(image_width)+").txt";
+String file_PCA_r = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells"+to_string(image_width)+"/PCA"+m_name+"_r("+d_name+to_string(image_width)+").txt";
+String file_Scores_b = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells"+to_string(image_width)+"/Scores"+m_name+"_b("+d_name+to_string(image_width)+").txt";
+String file_Scores_g = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells"+to_string(image_width)+"/Scores"+m_name+"_g("+d_name+to_string(image_width)+").txt";
+String file_Scores_r = "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells"+to_string(image_width)+"/Scores"+m_name+"_r("+d_name+to_string(image_width)+").txt";
 
 // Normalizes a given image into a value range between 0 and 255.
 Mat norm_0_255(const Mat& src) {
@@ -450,13 +443,13 @@ int main(int argc, const char *argv[]) {
     cout<<c.rows<<" "<<c.cols<<endl;
     cout<<d.rows<<" "<<d.cols<<endl;
     
-//    calculatePCA(cell_num);
+    calculatePCA(cell_num);
     
-    Mat bgr[3];
-    split(imread(oneImagePath), bgr);
-    Mat mean_bgr[3];
-    split(imread(oneImagePath), mean_bgr);
-    reconstruction(cell_num, bgr, mean_bgr);
+//    Mat bgr[3];
+//    split(imread(oneImagePath), bgr);
+//    Mat mean_bgr[3];
+//    split(imread(oneImagePath), mean_bgr);
+//    reconstruction(cell_num, bgr, mean_bgr);
     
 //  //   Save smaller PCA and scores
 //    int small = 10;

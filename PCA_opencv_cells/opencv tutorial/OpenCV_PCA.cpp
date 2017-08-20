@@ -17,8 +17,8 @@ using namespace Eigen;
 const bool isSmoothed = false;
 const int kernelSize = 3;
 //const int num_components = 60;
-const int smallerNum = 10;
-const int cell_dimension = 5;
+const int smallerNum = 100;
+const int cell_dimension = 30;
 //const int imageIndex = 10;
 const int image_num = 899;      //120
 const int image_width = 540;   //960
@@ -435,11 +435,12 @@ int main(int argc, const char *argv[]) {
     
     Mat bgr[3];
     split(imread(oneImagePath), bgr);
-    reconstructionAllImages(cell_num, bgr, 8);
-    reconstructionAllImages(cell_num, bgr, 7);
-    reconstructionAllImages(cell_num, bgr, 6);
-    reconstructionAllImages(cell_num, bgr, 5);
-    reconstructionAllImages(cell_num, bgr, 4);
+    reconstructionAllImages(cell_num, bgr, 100);
+//    reconstructionAllImages(cell_num, bgr, 50);
+//    reconstructionAllImages(cell_num, bgr, 60);
+//    reconstructionAllImages(cell_num, bgr, 70);
+//    reconstructionAllImages(cell_num, bgr, 80);
+//    reconstructionAllImages(cell_num, bgr, 90);
     
 //    saveSmallerScores("/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/Scores80_cells20_b1(head1080).txt","/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/Scores80_cells20_b2(head1080).txt", "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/Scores40_cells20_b(head1080).txt", 40);
 //    saveSmallerPCA("/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/PCA80_cells20_g(head1080).txt", "/Users/yinghanxu/Study/Dissertation_ResultData/ResultPCA_cells/PCA40_cells20_g(head1080).txt", 40, cell_num, 80);
