@@ -57,17 +57,22 @@
 
 import cv2
 
-for i in range(900):
-	img = cv2.imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/head_900(resolution1080)/head"+str(i+1)+".png")
-	size = (540,540)
-	img = cv2.resize(img, size, interpolation=cv2.INTER_AREA)
+# for i in range(900):
+# 	img = cv2.imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/head_900(resolution1080)/head"+str(i+1)+".png")
+# 	size = (540,540)
+# 	img = cv2.resize(img, size, interpolation=cv2.INTER_AREA)
 
-# cv2.imshow("resize", img)
-	cv2.imwrite("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/head_900(resolution540)/head"+str(i+1)+".png", img)
+# # cv2.imshow("resize", img)
+# 	cv2.imwrite("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/head_900(resolution540)/head"+str(i+1)+".png", img)
+# # cv2.waitKey(0)
+# print("Finish resizing")
+
+
+img = cv2.imread("/Users/yinghanxu/Study/Dissertation_ResultData/Data_Set/ResultImages/head(720)_cell10_10/head11.png")
+img = img[360:420, 360:420]
+cv2.imwrite("cells10_10.png", img)
+# cv2.imshow("cells", img)
 # cv2.waitKey(0)
-print("Finish resizing")
-
-
 
 
 
